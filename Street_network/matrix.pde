@@ -77,9 +77,15 @@ void loadStreets()
         StreetSegment ss = new StreetSegment(getPointsFromCell(l[routeCol]));
         float costForward = float(l[costF]);
         float costBack = float(l[costB]);
+        
+        /*
+            Maximum costs ("distance/time")
+        */
         if(costForward>maxCost) maxCost = costForward;
         if(costBack>maxCost) maxCost = costBack;
+        
         ss.costs=new PVector(costForward, costBack);
+        ss.ID = l[IDcol];
         println(ss.costs);
         streetNetwork.put(l[IDcol], ss);
    }

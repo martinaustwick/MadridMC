@@ -20,5 +20,14 @@ class OD
         }
     }
     
+    void display()
+    {
+        fill(0);
+        ellipse(p.x, p.y, 5, 5);
+        line(p.x, p.y, nearestIntersection.x, nearestIntersection.y);
+        text(nearestIntersectionID, nearestIntersection.x, nearestIntersection.y);
+        noFill();
+        //ellipse(nearestIntersection.x, nearestIntersection.y, 10, 10);
+    }
     
 }

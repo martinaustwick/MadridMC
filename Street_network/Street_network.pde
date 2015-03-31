@@ -12,7 +12,7 @@ float maxStroke = 30;
 float curviness = 0.2;
 float maxThickness = 1;
 
-float streetAlpha = 70;
+float streetAlpha = 100;
 
 /*
 Latlon window
@@ -24,7 +24,7 @@ float lonmax = -404000;
 
 void setup()
 {
-    size(1200, 1200);
+    size(700, 700);
     loadPosns();
     
     loadStreets();
@@ -70,12 +70,7 @@ void draw()
     stroke(0);
      for(OD od: posns.values())
     {    
-        //point(od.p.x, od.p.y);
-        fill(0);
-        ellipse(od.p.x, od.p.y, 5, 5);
-        line(od.p.x, od.p.y, od.nearestIntersection.x, od.nearestIntersection.y);
-        noFill();
-        ellipse(od.nearestIntersection.x, od.nearestIntersection.y, 10, 10);
+       od.display();
     }
       
 }

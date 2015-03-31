@@ -4,6 +4,7 @@ class StreetSegment
     ArrayList<PVector> points;
     ArrayList<PVector> screenPoints;
     PVector costs;
+    String ID;
     
     StreetSegment(ArrayList<PVector> pointsIn)
     {
@@ -21,8 +22,9 @@ class StreetSegment
     void display()
     {
         colorMode(HSB);
-        float fdiff = 2*(costs.x)/(costs.x+costs.y);
-        stroke(100*fdiff, 255, 100, streetAlpha);
+        float fdiff = (costs.x)/(costs.x+costs.y);
+        //println(fdiff);
+        stroke(255*fdiff, 255, 100, streetAlpha);
         for(int i = 1; i<screenPoints.size(); i++)
         {
             PVector p1 = screenPoints.get(i-1);
@@ -31,8 +33,9 @@ class StreetSegment
             bline(p2, p1);
         }
         
-        fdiff = 2*(costs.y)/(costs.x+costs.y);
-        stroke(100*fdiff, 255, 100, streetAlpha);
+        fdiff = (costs.y)/(costs.x+costs.y);
+        //println(fdiff);
+        stroke(255*fdiff, 255, 100, streetAlpha);
         for(int i = 1; i<screenPoints.size(); i++)
         {
             PVector p1 = screenPoints.get(i-1);
