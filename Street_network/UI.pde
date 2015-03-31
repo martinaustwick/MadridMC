@@ -15,5 +15,5 @@ void keyPressed()
       println(curviness);
     }
     
-    if(key=='f') saveFrame("images/frame.jpg");
+    if(key=='f') saveFrame("images/+" + millis() + ".jpg");
 }

@@ -22,7 +22,7 @@ class StreetSegment
     {
         colorMode(HSB);
         float fdiff = 2*(costs.x)/(costs.x+costs.y);
-        stroke(100*fdiff, 255, 100);
+        stroke(100*fdiff, 255, 100, streetAlpha);
         for(int i = 1; i<screenPoints.size(); i++)
         {
             PVector p1 = screenPoints.get(i-1);
@@ -32,7 +32,7 @@ class StreetSegment
         }
         
         fdiff = 2*(costs.y)/(costs.x+costs.y);
-        stroke(100*fdiff, 255, 100, 100);
+        stroke(100*fdiff, 255, 100, streetAlpha);
         for(int i = 1; i<screenPoints.size(); i++)
         {
             PVector p1 = screenPoints.get(i-1);

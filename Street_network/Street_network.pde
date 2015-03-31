@@ -1,5 +1,7 @@
-HashMap<String, PVector> posns = new HashMap<String, PVector> ();
+HashMap<String, OD> posns = new HashMap<String, OD> ();
 HashMap<String, HashMap<String, Float>> weight;
+HashMap<String, StreetSegment> streetNetwork;
+
 
 String network = "MatrixOD_Flow.csv";
 String positions = "nodes.csv";
@@ -9,6 +11,8 @@ float maxWeight = 0;
 float maxStroke = 30;
 float curviness = 0.2;
 float maxThickness = 1;
+
+float streetAlpha = 70;
 
 /*
 Latlon window
@@ -20,10 +24,15 @@ float lonmax = -404000;
 
 void setup()
 {
-    size(1500, 1500);
+    size(1200, 1200);
     loadPosns();
     
     loadStreets();
+    
+    for(OD od:posns.values())
+    {
+        od.findNearestIntersection(streetNetwork);
+    }
     
     weight = new HashMap<String, HashMap<String, Float>>();
     //makeUpWeights();
@@ -48,18 +57,25 @@ void draw()
 {
     background(255);
     stroke(0);
-    noFill();
+    //noFill();
     
-    for(PVector p: posns.values())
-    {        
-        point(p.x, p.y);
-        ellipse(p.x, p.y, 30, 30);
-    }
+   
     //drawWeights();
     
     for(StreetSegment sso: streetNetwork.values())
     {
         sso.display();
+    }
+    
+    stroke(0);
+     for(OD od: posns.values())
+    {    
+        //point(od.p.x, od.p.y);
+        fill(0);
+        ellipse(od.p.x, od.p.y, 5, 5);
+        line(od.p.x, od.p.y, od.nearestIntersection.x, od.nearestIntersection.y);
+        noFill();
+        ellipse(od.nearestIntersection.x, od.nearestIntersection.y, 10, 10);
     }
       
 }
@@ -81,8 +97,8 @@ void drawWeights()
                 //println(weight.get(s).get(t) + " " + maxWeight);
                 
                 
-                PVector o = posns.get(s);
-                PVector d = posns.get(t);
+                PVector o = posns.get(s).p;
+                PVector d = posns.get(t).p;
                 //println(s + " " + t);
                 if(o!=null && d!=null) {
                   //line(o.x, o.y, d.x, d.y);

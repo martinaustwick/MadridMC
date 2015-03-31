@@ -1,4 +1,3 @@
-HashMap<String, StreetSegment> streetNetwork;
 char delimiter = ';';
 float maxCost = 0;
 
@@ -17,7 +16,11 @@ void loadPosns()
        String [] l = split(sp[i], ",");
        float x = map(float(l[xcol]), lonmin, lonmax, 0, width);
        float y = map(float(l[ycol]), latmin, latmax, height, 0);
-       posns.put(l[IDcol], new PVector(x,y));
+       
+       OD od = new OD();
+       od.p = new PVector(x,y);
+       
+       posns.put(l[IDcol], od);
    }
 }
 
