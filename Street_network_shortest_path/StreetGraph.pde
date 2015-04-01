@@ -1,4 +1,4 @@
-float totalCostScale = 255/300.0;
+float totalCostScale = 255/3000.0;
 
 class Intersection
 {
@@ -25,18 +25,19 @@ class Intersection
         else noFill();
         
         if(selecting) {
-          fill((d*totalCostScale)%255, 255, 200);
+          noStroke();
+          fill((d*totalCostScale)%255, 255, 200, 100);
+          if(d>9999999) fill(0, 0, 100, 100);
           //text(d, p.x, p.y);
         }
 //        else
 //        {
-          rect(p.x, p.y, 10,10);
+          rect(p.x, p.y, 5,5);
         //}
         
 
           if(showIntersectionJoins)
           {
-              //println(destinations.size());
               for(String d: destinations)
               {
                   PVector q = intersections.get(d).p;
@@ -121,7 +122,6 @@ HashMap<String, Intersection> createIntersections(HashMap<String, StreetSegment>
         ints.get(startIntersectionName).destinations.add(endIntersectionName);
         ints.get(endIntersectionName).destinations.add(startIntersectionName);
     }
-    //println(ints.size());
     return ints;
     
 }
@@ -217,7 +217,6 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         if(edges.get(endIntersectionName)==null) edges.put(endIntersectionName, new HashMap<String, Edge>());
         edges.get(endIntersectionName).put(startIntersectionName, eback);
     }
-    //println(ints.size());
 
     
 }

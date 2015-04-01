@@ -26,7 +26,6 @@ class StreetSegment
     {
         
         float fdiff = (costs.x)/(costs.x+costs.y);
-        //println(fdiff);
         stroke(c);
         //stroke(255*fdiff, 255, 100, streetAlpha);
         for(int i = 1; i<screenPoints.size(); i++)
@@ -38,8 +37,7 @@ class StreetSegment
         }
         
         fdiff = (costs.y)/(costs.x+costs.y);
-        //println(fdiff);
-        //stroke(255*fdiff, 255, 100, streetAlpha);
+
         
         for(int i = 1; i<screenPoints.size(); i++)
         {

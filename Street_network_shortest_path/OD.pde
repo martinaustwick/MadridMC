@@ -45,12 +45,13 @@ class OD
     
     void display()
     {
-        fill(0,255,200);
-        ellipse(p.x, p.y, 10, 10);
+        //fill(0,255,200);
+        noFill();
+        ellipse(p.x, p.y, 20, 20);
         line(p.x, p.y, nearestIntersection.x, nearestIntersection.y);
         if(frameCount<2) intersections.get(nearestIntersectionID).isOD = true;
         //text(nearestIntersectionID, nearestIntersection.x, nearestIntersection.y);
-        noFill();
+        
         //ellipse(nearestIntersection.x, nearestIntersection.y, 10, 10);
     }
     

@@ -153,30 +153,27 @@ boolean handij()
      
 }
 
-String reverseDIJstep(String originID, String destID)
+String reverseDIJstep(String destID)
 {
     Intersection chaini = intersections.get(destID);
+    println("destID:"+destID + "/ " + intersections.size());
     int shortestInt = floor(random(chaini.destinations.size()));
     float currentD = chaini.d;
     float shortestIntersection = intersections.get(chaini.destinations.get(0)).d;
     String shortestString = "";
     
-    for(int i = 1; i<chaini.destinations.size(); i++)
+    for(String s: chaini.destinations)
     {
-        String s = chaini.destinations.get(i);
+        //String s = chaini.destinations.get(i);
+        //println(currentD + " " + intersections.get(s).d);
         if(intersections.get(s).d<currentD) 
         {
             currentD = intersections.get(s).d;
             shortestString = s;
+            
         }
     }    
-    
-   println("Current and Future");
-   println(destID + " " + chaini.d);
-   println(shortestString); 
-   Intersection winni = intersections.get(shortestString);
-    
-   println(shortestString + " " + winni.d);
+ 
     
     return shortestString;
 }

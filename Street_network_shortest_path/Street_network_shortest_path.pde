@@ -1,3 +1,5 @@
+import java.util.*;
+
 HashMap<String, OD> posns = new HashMap<String, OD> ();
 HashMap<String, HashMap<String, Float>> weight;
 HashMap<String, StreetSegment> streetNetwork;
@@ -25,13 +27,16 @@ float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 1700;
+int h = 700;
 
-String startString = "5";
-String pathString = "70";
+String startString = "1";
+String pathString = "500";
 
+//backwards pathfinding
 boolean DIJforwardComplete = false;
-
+ArrayList<String> path;
+Iterator<String> it1,it2;
+int countpaths;
 
 void setup()
 {
@@ -63,17 +68,20 @@ void setup()
     rectMode(CENTER);
     colorMode(HSB);
     
-//    float startTime = millis();
-//    dij("1");
-//    println(millis()-startTime);
+
 
 
     /*
-        bits for handij
-    */
+         Iterate through OD subset of intersections
+     */
     
+    it1 = posns.keySet().iterator();
+    startString = posns.get(it1.next()).nearestIntersectionID;
+    //println
     
+    println(startString + " " + pathString);
     setupDIJ(startString);
+    countpaths = 0;
     
 }
 
@@ -82,13 +90,19 @@ void setupDIJ(String originID)
     for(Intersection i: intersections.values())
       {
             i.seen = false;
-            i.d = 999999;
+            i.d = 99999999;
       }
 
     wList = new ArrayList<String>();
     wList.add(originID);
     //doneList = new ArrayList<String>();
     intersections.get(originID).d = 0;
+    
+    path =  new ArrayList<String>();
+    it2 = posns.keySet().iterator();
+    pathString = posns.get(it2.next()).nearestIntersectionID;
+    DIJforwardComplete = false;
+    //pathString = posns.get(it2.next()).nearestIntersectionID;
 }
 
 //void makeUpWeights()
@@ -146,11 +160,44 @@ void draw()
     }
     else   
     {
-        pathString =  reverseDIJstep(startString, pathString);
-        //println(pathString);
-        noFill();
-        Intersection bp = intersections.get(pathString);
-        ellipse(bp.p.x, bp.p.y, 50, 50);
+        //HashMap<String, ArrayList<String>> tracks  
+      
+        float startPath = millis();
+        while(!pathString.equals(startString))
+        {
+            path.add(pathString);
+            pathString =  reverseDIJstep(pathString);
+        }
+        //println(millis()-startPath);
+        
+        if(pathString.equals(startString))
+        {
+            for(int i = 1; i<path.size(); i++)
+            {
+                String s1 = path.get(i-1);
+                String s2 = path.get(i);
+                Intersection bp1 = intersections.get(s1);
+                Intersection bp2 = intersections.get(s2);
+                
+                stroke(0);
+                strokeWeight(5);
+                line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
+            }
+              strokeWeight(1);
+            
+            if(it2.hasNext())
+            {
+                pathString = posns.get(it2.next()).nearestIntersectionID;
+                path = new ArrayList<String>();
+                println("completed " +(countpaths+1) + " of " + posns.size());
+                countpaths++;
+            }
+            else
+            {
+                startString = posns.get(it1.next()).nearestIntersectionID;
+                setupDIJ(startString);
+            }
+        }
     }
 }
 
@@ -162,24 +209,20 @@ void drawWeights()
         {
           
             float w = weight.get(s).get(t);
-            //println(w);
             if(abs(w)>0)
             {
                 
                 strokeWeight(maxThickness*weight.get(s).get(t)/maxWeight);
                 stroke(0, maxStroke*weight.get(s).get(t)/maxWeight);
-                //println(weight.get(s).get(t) + " " + maxWeight);
                 
                 
                 PVector o = posns.get(s).p;
                 PVector d = posns.get(t).p;
-                //println(s + " " + t);
                 if(o!=null && d!=null) {
                   //line(o.x, o.y, d.x, d.y);
                    if(s.equals(t))
                    {
                        ellipse(o.x, o.y, 10,10);
-                       //println("ohai");
                    }
                    else
                    {
