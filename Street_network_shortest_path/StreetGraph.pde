@@ -1,4 +1,4 @@
-float totalCostScale = 255/3000.0;
+float totalCostScale = 255/300.0;
 
 class Intersection
 {
@@ -25,12 +25,12 @@ class Intersection
         else noFill();
         
         if(selecting) {
-          fill(d*totalCostScale, 255, 200);
+          fill((d*totalCostScale)%255, 255, 200);
           //text(d, p.x, p.y);
         }
 //        else
 //        {
-          rect(p.x, p.y, 5,5);
+          rect(p.x, p.y, 10,10);
         //}
         
 
@@ -131,7 +131,7 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
 {
     int intersectionCount = 0;
     
-    intersections =  new HashMap<String, Intersection> ();
+    intersections =  new HashMap<String, Intersection>();
     edges = new HashMap<String, HashMap<String, Edge>>();
     
     for(String edgeName:streetSegz.keySet())
@@ -188,6 +188,10 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
             intersectionCount++;
             
         }
+        
+        /*
+            assuming that street segments are one-way...
+        */
         
         intersections.get(startIntersectionName).destinations.add(endIntersectionName);
         intersections.get(endIntersectionName).destinations.add(startIntersectionName);

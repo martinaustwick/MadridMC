@@ -84,9 +84,9 @@ void dij(String originID)
       
 }
 
-ArrayList<String> wList, newwList, doneList;
+ArrayList<String> wList, newwList;
 
-void handij(String originID, int it)
+boolean handij()
 {
     
     /*
@@ -94,7 +94,7 @@ void handij(String originID, int it)
     */
     
     
-    
+        boolean exhausted = true;
     
    
         ArrayList<String> newwList = new ArrayList<String>();
@@ -118,14 +118,13 @@ void handij(String originID, int it)
                     if(i2.d>cost) {
                       i2.d = cost;
                       i2.seen = false;
-                      println(cost);
+                      //println(cost);
                     }
                     
                     newwList.add(w2);
                 }
             }
             i.seen = true;
-            doneList.add(w);
             //println(doneList.size() + " " + intersections.size());
         }
         
@@ -136,12 +135,49 @@ void handij(String originID, int it)
         }
         //println(it);
         
+        for(Intersection i:intersections.values())
+        {
+            if(!i.seen)
+            {
+                exhausted = false;
+                break;
+            }
+        }
         
+        if(exhausted)
+        {
+            println("Boy! I'm exhausted");
+        }
+        
+        return exhausted;
+     
+}
+
+String reverseDIJstep(String originID, String destID)
+{
+    Intersection chaini = intersections.get(destID);
+    int shortestInt = floor(random(chaini.destinations.size()));
+    float currentD = chaini.d;
+    float shortestIntersection = intersections.get(chaini.destinations.get(0)).d;
+    String shortestString = "";
     
+    for(int i = 1; i<chaini.destinations.size(); i++)
+    {
+        String s = chaini.destinations.get(i);
+        if(intersections.get(s).d<currentD) 
+        {
+            currentD = intersections.get(s).d;
+            shortestString = s;
+        }
+    }    
     
+   println("Current and Future");
+   println(destID + " " + chaini.d);
+   println(shortestString); 
+   Intersection winni = intersections.get(shortestString);
     
+   println(shortestString + " " + winni.d);
     
-    
-      
+    return shortestString;
 }
 

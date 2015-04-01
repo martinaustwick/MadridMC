@@ -4,7 +4,7 @@
 
 boolean showInterSections = true;
 boolean showStreets = false;
-boolean showIntersectionJoins = false;
+boolean showIntersectionJoins = true;
 
 void keyPressed()
 {

@@ -25,7 +25,13 @@ float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 700;
+int h = 1700;
+
+String startString = "5";
+String pathString = "70";
+
+boolean DIJforwardComplete = false;
+
 
 void setup()
 {
@@ -65,17 +71,24 @@ void setup()
     /*
         bits for handij
     */
-  
+    
+    
+    setupDIJ(startString);
+    
+}
+
+void setupDIJ(String originID)
+{
     for(Intersection i: intersections.values())
       {
             i.seen = false;
             i.d = 999999;
       }
 
-     wList = new ArrayList<String>();
-    wList.add("1");
-    doneList = new ArrayList<String>();
-    intersections.get("1").d = 0;
+    wList = new ArrayList<String>();
+    wList.add(originID);
+    //doneList = new ArrayList<String>();
+    intersections.get(originID).d = 0;
 }
 
 //void makeUpWeights()
@@ -123,7 +136,22 @@ void draw()
         }
     }
       
-    handij("1",frameCount);    
+    float startTime = millis(); 
+     
+    
+    if(!DIJforwardComplete)
+    {
+        //println(millis() - startTime);
+        DIJforwardComplete = handij();
+    }
+    else   
+    {
+        pathString =  reverseDIJstep(startString, pathString);
+        //println(pathString);
+        noFill();
+        Intersection bp = intersections.get(pathString);
+        ellipse(bp.p.x, bp.p.y, 50, 50);
+    }
 }
 
 void drawWeights()
