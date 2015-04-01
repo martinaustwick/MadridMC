@@ -3,23 +3,25 @@ class Intersection
     String ID;
     ArrayList<String> destinations;
     PVector p;    
+    Boolean isOD;
     
     Intersection()
     {
         destinations = new ArrayList<String>();
+        isOD =  false;
     }
     
     void display()
     {
         stroke(0);
         
+        if(isOD) fill(0,255,200);
+        else noFill();
         rect(p.x, p.y, 5,5);
-//        fill(0);
-//        text(ID, p.x, p.y);
-//        noFill();
+
           if(showIntersectionJoins)
           {
-              println(destinations.size());
+              //println(destinations.size());
               for(String d: destinations)
               {
                   PVector q = intersections.get(d).p;
@@ -93,7 +95,7 @@ HashMap<String, Intersection> createIntersections(HashMap<String, StreetSegment>
         ints.get(startIntersectionName).destinations.add(endIntersectionName);
         ints.get(endIntersectionName).destinations.add(startIntersectionName);
     }
-    println(ints.size());
+    //println(ints.size());
     return ints;
     
 }

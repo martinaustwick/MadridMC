@@ -20,21 +20,31 @@ Latlon window
 float latmin = 4921500;
 float latmax = 4937000;
 float lonmin = -418000;
-float lonmax = -404000;
+float lonmax = -406000;
+
+int h = 1000;
 
 void setup()
 {
-    size(1500, 1500);
+    
+    
+    float dlat = (latmax-latmin);
+    float dlon =  (lonmax-lonmin);
+    
+    size(int((h*dlon)/dlat), h);
+    println(width + " " + height);
+    
     loadPosns();
     
     loadStreets();
     
+    intersections = createIntersections(streetNetwork);
     for(OD od:posns.values())
     {
-        od.findNearestIntersection(streetNetwork);
+        od.findNearestIntersection(intersections);
     }
     
-    intersections = createIntersections(streetNetwork);
+    
     
     weight = new HashMap<String, HashMap<String, Float>>();
     //makeUpWeights();

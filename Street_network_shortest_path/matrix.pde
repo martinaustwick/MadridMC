@@ -86,7 +86,7 @@ void loadStreets()
         
         ss.costs=new PVector(costForward, costBack);
         ss.ID = l[IDcol];
-        println(ss.costs);
+        //println(ss.costs);
         streetNetwork.put(l[IDcol], ss);
    }
 }

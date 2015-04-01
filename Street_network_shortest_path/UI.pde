@@ -1,7 +1,5 @@
 /*
     Display Options
-    
-    
 */
 
 boolean showInterSections = true;
