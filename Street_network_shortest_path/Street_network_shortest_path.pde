@@ -1,7 +1,9 @@
 HashMap<String, OD> posns = new HashMap<String, OD> ();
 HashMap<String, HashMap<String, Float>> weight;
 HashMap<String, StreetSegment> streetNetwork;
+
 HashMap<String, Intersection> intersections;
+HashMap<String, HashMap<String, Edge>> edges;
 
 String network = "MatrixOD_Flow.csv";
 String positions = "nodes.csv";
@@ -16,13 +18,14 @@ float streetAlpha = 100;
 
 /*
 Latlon window
+Actually, we're using Eastings and Northings here, so projection is dead easy
 */
 float latmin = 4921500;
 float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 1000;
+int h = 700;
 
 void setup()
 {
@@ -38,7 +41,8 @@ void setup()
     
     loadStreets();
     
-    intersections = createIntersections(streetNetwork);
+    //intersections = createIntersections(streetNetwork);
+    createGraph(streetNetwork);
     for(OD od:posns.values())
     {
         od.findNearestIntersection(intersections);
@@ -52,6 +56,26 @@ void setup()
     
     rectMode(CENTER);
     colorMode(HSB);
+    
+//    float startTime = millis();
+//    dij("1");
+//    println(millis()-startTime);
+
+
+    /*
+        bits for handij
+    */
+  
+    for(Intersection i: intersections.values())
+      {
+            i.seen = false;
+            i.d = 999999;
+      }
+
+     wList = new ArrayList<String>();
+    wList.add("1");
+    doneList = new ArrayList<String>();
+    intersections.get("1").d = 0;
 }
 
 //void makeUpWeights()
@@ -99,6 +123,7 @@ void draw()
         }
     }
       
+    handij("1",frameCount);    
 }
 
 void drawWeights()
