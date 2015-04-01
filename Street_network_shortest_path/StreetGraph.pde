@@ -22,7 +22,6 @@ class Intersection
               println(destinations.size());
               for(String d: destinations)
               {
-                  println("wtf");
                   PVector q = intersections.get(d).p;
                   line(p.x, p.y, q.x, q.y);
               }
