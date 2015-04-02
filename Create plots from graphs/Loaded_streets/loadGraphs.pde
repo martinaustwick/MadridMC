@@ -7,7 +7,7 @@ HashMap<String, HashMap<String, Route>> loadRoutes(String filename)
     HashMap<String, HashMap<String, Route>> routesIn = new HashMap<String, HashMap<String, Route>>();
     Table table = loadTable(filename, "header");
 
-    println(table.getRowCount() + " total rows in table"); 
+    //println(table.getRowCount() + " total rows in table"); 
   
     for (TableRow row : table.rows()) {
       

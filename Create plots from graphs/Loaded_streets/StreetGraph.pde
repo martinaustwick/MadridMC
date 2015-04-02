@@ -53,6 +53,11 @@ class Edge
 {
     float weight, cost, time;
     String startID, endID;
+    
+    Edge()
+    {
+        weight = 0.0;
+    }
 }
 
 
