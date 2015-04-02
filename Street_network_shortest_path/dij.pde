@@ -146,7 +146,7 @@ boolean handij()
         
         if(exhausted)
         {
-            println("Boy! I'm exhausted");
+            //println("Boy! I'm exhausted");
         }
         
         return exhausted;
@@ -156,7 +156,7 @@ boolean handij()
 String reverseDIJstep(String destID)
 {
     Intersection chaini = intersections.get(destID);
-    println("destID:"+destID + "/ " + intersections.size());
+    //println("destID:"+destID + "/ " + intersections.size());
     int shortestInt = floor(random(chaini.destinations.size()));
     float currentD = chaini.d;
     float shortestIntersection = intersections.get(chaini.destinations.get(0)).d;
