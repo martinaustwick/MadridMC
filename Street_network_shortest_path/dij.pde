@@ -178,3 +178,18 @@ String reverseDIJstep(String destID)
     return shortestString;
 }
 
+void showDIJ()
+{
+            for(OD od: ods.values())
+            {    
+               od.display();
+            }
+            
+            if(showInterSections)
+            {
+                for(Intersection i: intersections.values())
+                {
+                    i.display();
+                }
+            }
+}

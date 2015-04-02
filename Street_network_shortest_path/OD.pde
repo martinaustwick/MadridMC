@@ -4,30 +4,10 @@ class OD
     String nearestIntersectionID;
     
     
-    
-//    void findNearestIntersection(HashMap<String, StreetSegment> streets)
-//    {
-//        /*
-//            Confusingly, this actually derives the *start* of the nearest *segment*
-//        */
-//        float minDistance = 500;
-//        for(String s: streets.keySet())
-//        {
-//            float dist = PVector.dist(p, streets.get(s).screenPoints.get(0));
-//            if(dist<minDistance)
-//            {
-//                nearestIntersectionID = s;
-//                minDistance = dist;
-//                nearestIntersection = streets.get(s).screenPoints.get(0);
-//            }
-//        }
-//    }
-    
     void findNearestIntersection(HashMap<String, Intersection> intz)
     {
         /*
-            Derives intersection from intersections
-            These two methods aren't really compatible
+            Derives closest from intersections
         */
         float minDistance = 50000;
         for(String s: intz.keySet())
@@ -60,21 +40,21 @@ class OD
 
 void drawWeights()
 {
-    for(String s:weight.keySet())
+    for(String s:flows.keySet())
     {
-        for(String t: weight.get(s).keySet())
+        for(String t: flows.get(s).keySet())
         {
           
-            float w = weight.get(s).get(t);
+            float w = flows.get(s).get(t);
             if(abs(w)>0)
             {
                 
-                strokeWeight(maxThickness*weight.get(s).get(t)/maxWeight);
-                stroke(0, maxStroke*weight.get(s).get(t)/maxWeight);
+                strokeWeight(maxThickness*flows.get(s).get(t)/maxFlow);
+                stroke(0, maxStroke*flows.get(s).get(t)/maxFlow);
                 
                 
-                PVector o = posns.get(s).p;
-                PVector d = posns.get(t).p;
+                PVector o = ods.get(s).p;
+                PVector d = ods.get(t).p;
                 if(o!=null && d!=null) {
                   //line(o.x, o.y, d.x, d.y);
                    if(s.equals(t))

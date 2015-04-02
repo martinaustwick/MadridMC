@@ -1,15 +1,27 @@
 import java.util.*;
 
-HashMap<String, OD> posns = new HashMap<String, OD> ();
-HashMap<String, HashMap<String, Float>> weight;
+/*
+    High-level graph: OD/flows
+*/
+HashMap<String, OD> ods = new HashMap<String, OD> ();
+HashMap<String, HashMap<String, Float>> flows;
+
 HashMap<String, StreetSegment> streetNetwork;
 
 HashMap<String, Intersection> intersections;
 HashMap<String, HashMap<String, Edge>> edges;
 
+//OD graph
 String network = "MatrixOD_Flow.csv";
 String positions = "nodes.csv";
+
+//intersection graph
+String intersectionFile = "intersections.csv";
+String intersectionEdgeFile = "edges.csv";
+
+//street graph
 String streetFile = "Street Network with pseudotimes.csv";
+
 
 /*
     Output files
@@ -18,7 +30,7 @@ String streetFile = "Street Network with pseudotimes.csv";
 String intersectionsOut = "intersections.csv";
 String edgesOut = "edges.csv";
 
-float maxWeight = 0;
+float maxFlow = 0;
 float maxStroke = 30;
 float curviness = 0.2;
 float maxThickness = 1;
@@ -34,7 +46,7 @@ float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 720;
+int h = 1080;
 
 String startString = "1";
 String pathString = "500";
@@ -43,12 +55,14 @@ String startOD, endOD;
 
 //backwards pathfinding
 boolean DIJforwardComplete = false;
+boolean allPathsFound = false;
+boolean showPathfinding = false;
 ArrayList<String> path;
 Iterator<String> it1,it2;
 int countpaths;
 
 //keyed by OD, not intersection
-HashMap<String, HashMap<String, ArrayList<String>>> routes = new HashMap<String, HashMap<String, ArrayList<String>>>();
+HashMap<String, HashMap<String, Route>> routes = new HashMap<String, HashMap<String, Route>>();
 Table dataOut;
 
 void setup()
@@ -61,21 +75,21 @@ void setup()
     size(int((h*dlon)/dlat), h);
     println(width + " " + height);
     
-    loadPosns();
+    loadods();
     
     loadStreets();
     
     //intersections = createIntersections(streetNetwork);
     createGraph(streetNetwork);
-    for(OD od:posns.values())
+    for(OD od:ods.values())
     {
         od.findNearestIntersection(intersections);
     }
     
     
     
-    weight = new HashMap<String, HashMap<String, Float>>();
-    //makeUpWeights();
+    flows = new HashMap<String, HashMap<String, Float>>();
+    //makeUpflowss();
     loadWeight();
     
     rectMode(CENTER);
@@ -88,9 +102,9 @@ void setup()
          Iterate through OD subset of intersections
      */
     
-    it1 = posns.keySet().iterator();
+    it1 = ods.keySet().iterator();
     startOD = it1.next();
-    startString = posns.get(startOD).nearestIntersectionID;
+    startString = ods.get(startOD).nearestIntersectionID;
     //println
     
     println(startString + " " + pathString);
@@ -125,60 +139,40 @@ void setupDIJ(String originID)
     intersections.get(originID).d = 0;
     
     path =  new ArrayList<String>();
-    it2 = posns.keySet().iterator();
+    it2 = ods.keySet().iterator();
     
     endOD = it2.next();
-    endString = posns.get(endOD).nearestIntersectionID;
+    endString = ods.get(endOD).nearestIntersectionID;
     pathString = endString;
     DIJforwardComplete = false;
-    //pathString = posns.get(it2.next()).nearestIntersectionID;
+    //pathString = ods.get(it2.next()).nearestIntersectionID;
+    frameRate(4000);
 }
 
-//void makeUpWeights()
-//{
-//    for(String s:posns.keySet())
-//    {
-//        HashMap<String, Float> temp = new HashMap<String, Float>();
-//        for(String t:posns.keySet())
-//        {
-//            if(random(1)<0.001) temp.put(t, random(255));
-//        }
-//        
-//        if(temp.size()>0) weight.put(s, temp);
-//    }
-//}
+
 
 void draw()
 {
     
     stroke(0);
-    //noFill();
-    
+    //println("framerate " + frameRate);
    
     //drawWeights();
     if(!DIJforwardComplete)
     {
-        background(255);
-        if(showStreets)
+        if(showPathfinding)
         {
-          for(StreetSegment sso: streetNetwork.values())
-          {
-              sso.display();
-          }
-        }
-        
-        stroke(0);
-         for(OD od: posns.values())
-        {    
-           od.display();
-        }
-        
-        if(showInterSections)
-        {
-            for(Intersection i: intersections.values())
+            background(255);
+            if(showStreets)
             {
-                i.display();
+              for(StreetSegment sso: streetNetwork.values())
+              {
+                  sso.display();
+              }
             }
+            
+            stroke(0);
+            showDIJ(); 
         }
     }
     
@@ -207,32 +201,36 @@ void draw()
             Intersection bp1;
             Intersection bp2 = new Intersection();
             ArrayList<String> forwardPath = new ArrayList<String>();
+            
+            stroke(0);
+            strokeWeight(2);
             for(int i = path.size()-1; i>0; i--)
             {
                 String s1 = path.get(i-1);
                 String s2 = path.get(i);
-                bp1 = intersections.get(s1);
-                bp2 = intersections.get(s2);
                 
-                stroke(0);
-                strokeWeight(2);
-                line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
+                
+                if(showPathfinding)
+                {
+                    
+                    
+                    bp1 = intersections.get(s1);
+                    bp2 = intersections.get(s2);
+                    line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
+                }
                 
                 forwardPath.add(s2);
             }
             forwardPath.add(startString);
-            if(routes.get(startString)==null)routes.put(startString, new HashMap<String, ArrayList<String>>());
-            routes.get(startString).put(endString, forwardPath);
-            
-            //bp1 = intersections.get(startString);
-            //line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
-              strokeWeight(1);
+            if(routes.get(startString)==null) routes.put(startString, new HashMap<String, Route>());            
+            routes.get(startString).put(endString, new Route(forwardPath));
+            strokeWeight(1);
             
             if(it2.hasNext())
             {
-                //pathString = posns.get(it2.next()).nearestIntersectionID;
+                //pathString = ods.get(it2.next()).nearestIntersectionID;
                 endOD = it2.next();
-                endString = posns.get(endOD).nearestIntersectionID;
+                endString = ods.get(endOD).nearestIntersectionID;
                 pathString = endString;
                 path = new ArrayList<String>();
                 
@@ -241,12 +239,16 @@ void draw()
             {
                 saveRoutes();
                 
+                println("framerate " + frameRate);
+                background(255);
+                showDIJ(); 
+                
                 if(it1.hasNext())
                 {
                     startOD = it1.next();
-                    startString = posns.get(startOD).nearestIntersectionID;
+                    startString = ods.get(startOD).nearestIntersectionID;
                     setupDIJ(startString);
-                    println("completed " +(countpaths+1) + " of " + posns.size());
+                    println("completed " +(countpaths+1) + " of " + ods.size());
                     countpaths++;
                 }
                 else
@@ -259,12 +261,3 @@ void draw()
     
     if(capture) saveFrame("images/######.jpg");
 }
-
-
-
-
-
-
-
-
-

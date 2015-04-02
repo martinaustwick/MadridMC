@@ -55,10 +55,7 @@ class Edge
     String startID, endID;
 }
 
-//HashMap<String, HashMap<String, Edge>> createGraph()
-//{
-//    
-//}
+
 
 HashMap<String, Intersection> createIntersections(HashMap<String, StreetSegment> streetSegz)
 {
@@ -222,4 +219,3 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
 
     
 }
-

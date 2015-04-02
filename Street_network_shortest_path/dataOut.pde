@@ -5,7 +5,7 @@ void saveRoutes()
           for(String s2: routes.get(s1).keySet())
           {
               String routing = "";
-              for(String routep:routes.get(s1).get(s2))
+              for(String routep:routes.get(s1).get(s2).intersectionIDs)
               {
                   routing += routep;
                   routing += "|";
