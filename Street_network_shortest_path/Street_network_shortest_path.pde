@@ -11,6 +11,13 @@ String network = "MatrixOD_Flow.csv";
 String positions = "nodes.csv";
 String streetFile = "Street Network with pseudotimes.csv";
 
+/*
+    Output files
+*/
+
+String intersectionsOut = "intersections.csv";
+String edgesOut = "edges.csv";
+
 float maxWeight = 0;
 float maxStroke = 30;
 float curviness = 0.2;
@@ -27,7 +34,7 @@ float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 700;
+int h = 720;
 
 String startString = "1";
 String pathString = "500";
@@ -109,7 +116,9 @@ void setupDIJ(String originID)
             i.seen = false;
             i.d = 99999999;
       }
-
+    saveIntersections();
+    saveEdges();
+    
     wList = new ArrayList<String>();
     wList.add(originID);
     //doneList = new ArrayList<String>();
@@ -230,7 +239,7 @@ void draw()
             }
             else
             {
-                dataDump();
+                saveRoutes();
                 
                 if(it1.hasNext())
                 {
@@ -252,94 +261,9 @@ void draw()
 }
 
 
-void dataDump()
-{
-      for(String s1: routes.keySet())
-      {
-          for(String s2: routes.get(s1).keySet())
-          {
-              String routing = "";
-              for(String routep:routes.get(s1).get(s2))
-              {
-                  routing += routep;
-                  routing += "|";
-              }
-              
-              TableRow newRow = dataOut.addRow();
-              //newRow.setString(
-              newRow.setString("start_OD", startOD);
-              newRow.setString("end_OD", endOD);
-              newRow.setString("start_intersection", s1);
-              newRow.setString("end_intersection", s2);
-              newRow.setString("route_intersections", routing);
-          }
-      }
-    
-      saveTable(dataOut, "dataOut/routing.csv");
-}
 
-//void intersectionData()
-//{
-//    Table interTable = new Table();
-//    interTable.addColumn("ID");
-//    interTable.addColumn("x");
-//    interTable.addColumn("y");
-//    interTable.addColumn("destinations");
-//    for(String s: intersections.keySet())
-//    {
-//        
-//    }
-//
-//}
 
-void drawWeights()
-{
-    for(String s:weight.keySet())
-    {
-        for(String t: weight.get(s).keySet())
-        {
-          
-            float w = weight.get(s).get(t);
-            if(abs(w)>0)
-            {
-                
-                strokeWeight(maxThickness*weight.get(s).get(t)/maxWeight);
-                stroke(0, maxStroke*weight.get(s).get(t)/maxWeight);
-                
-                
-                PVector o = posns.get(s).p;
-                PVector d = posns.get(t).p;
-                if(o!=null && d!=null) {
-                  //line(o.x, o.y, d.x, d.y);
-                   if(s.equals(t))
-                   {
-                       ellipse(o.x, o.y, 10,10);
-                   }
-                   else
-                   {
-                     bline(o,d);
-                   }
-                }
-            }
-        }
-    }
-}
 
-void bline(PVector oh, PVector dee)
-{
-    PVector diff = PVector.sub(dee, oh);
-    float angle = diff.heading();
-   
-    
-    pushMatrix();
-      translate(oh.x, oh.y);
-      rotate(angle);
-      //line(0,0,diff.mag(),0);
-      
-      float d = diff.mag();
-      bezier(0.0,0.0, (1-curviness)*d, curviness*d, d, curviness*d, d, 0);
-    popMatrix();
-}
 
 
 
