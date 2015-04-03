@@ -1,4 +1,5 @@
 import java.util.*;
+import java.io.*;
 
 /*
     High-level graph: OD/flows
@@ -29,6 +30,7 @@ String streetFile = "Street Network with pseudotimes.csv";
 
 String intersectionsOut = "intersections.csv";
 String edgesOut = "edges.csv";
+String routesOutString = "routes.csv";
 
 float maxFlow = 0;
 float maxStroke = 30;
@@ -63,11 +65,16 @@ int countpaths;
 
 //keyed by OD, not intersection
 HashMap<String, HashMap<String, Route>> routes = new HashMap<String, HashMap<String, Route>>();
-Table dataOut;
+//Table dataOut;
+int routeCounter = 0;
 
 void setup()
 {
-    
+    routesOutString = int(random(10000)) + routesOutString;
+    PrintWriter output = createWriter("dataOut/" + routesOutString); 
+    output.println("start_OD, endO_D, start_Intersection, end_Intersection, route_Intersections");
+    output.flush();
+    output.close();
     
     float dlat = (latmax-latmin);
     float dlon =  (lonmax-lonmin);
@@ -115,16 +122,18 @@ void setup()
         Readying for data outputs
     */
     
-    dataOut = new Table();
-    dataOut.addColumn("start_OD");
-    dataOut.addColumn("end_OD");
-    dataOut.addColumn("start_intersection");
-    dataOut.addColumn("end_intersection");
-    dataOut.addColumn("route_intersections");
+    // dataOut = new Table();
+    // dataOut.addColumn("start_OD");
+    // dataOut.addColumn("end_OD");
+    // dataOut.addColumn("start_intersection");
+    // dataOut.addColumn("end_intersection");
+    // dataOut.addColumn("route_intersections");
 }
 
+float clock = 0;
 void setupDIJ(String originID)
 {
+    clock = millis();
     for(Intersection i: intersections.values())
       {
             i.seen = false;
@@ -251,8 +260,8 @@ void draw()
             }
             else
             {
-                saveRoutes();
-                
+                updateRoutes();
+                //updateRouteOut();
                 println("framerate " + frameRate);
                 background(255);
                 showDIJ(); 
@@ -262,16 +271,22 @@ void draw()
                     startOD = it1.next();
                     startString = ods.get(startOD).nearestIntersectionID;
                     setupDIJ(startString);
-                    println("completed " +(countpaths+1) + " of " + ods.size());
+                    println("completed " +(countpaths+1) + " of " + ods.size() + " time taken: " + (millis()-clock) + "ms; estimated time remaining " + ((millis()-clock)*(ods.size() - countpaths + 1)/1000.0) + "s" );
                     countpaths++;
                 }
                 else
                 {
                     noLoop();
+                    //saveRoutes();
                 }
             }
         }
     }
     
     if(capture) saveFrame("images/######.jpg");
+}
+
+void exit()
+{
+    //saveRoutes();
 }

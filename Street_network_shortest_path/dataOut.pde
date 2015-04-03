@@ -1,31 +1,104 @@
+ArrayList<String> routesOut = new ArrayList<String>();
+void updateRouteOut()
+{
+    
+        for(String s1: routes.keySet())
+        {
+            for(String s2: routes.get(s1).keySet())
+            {
+                String routing = "";
+                String startIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
+                String endIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
+                for(String routep:routes.get(s1).get(s2).intersectionIDs)
+                {
+                    routing += routep;
+                    routing += "|";
+                    
+                    endIntersection = routep;
+                }
+                
+                
+                
+                String line = s1 + ",";
+                line += s2 + ",";
+                line += startIntersection + ",";
+                line += endIntersection + ",";
+                line += routing;
+                //line +="\r\n";
+                routesOut.add(line);
+            }
+        }
+        println(routesOut.size() + " routes, " + (1+countpaths)*ods.size() + " expected");
+
+}
+
+
 void saveRoutes()
 {
-      for(String s1: routes.keySet())
-      {
-          for(String s2: routes.get(s1).keySet())
-          {
-              String routing = "";
-              String startIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
-              String endIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
-              for(String routep:routes.get(s1).get(s2).intersectionIDs)
-              {
-                  routing += routep;
-                  routing += "|";
-                  
-                  endIntersection = routep;
-              }
-              
-              TableRow newRow = dataOut.addRow();
-              //newRow.setString(
-              newRow.setString("start_OD", s1);
-              newRow.setString("end_OD", s2);
-              newRow.setString("start_intersection", startIntersection);
-              newRow.setString("end_intersection", endIntersection);
-              newRow.setString("route_intersections", routing);
-          }
-      }
+    PrintWriter pw = createWriter("dataOut/" + routesOutString);
+    pw.println("start_OD, endO_D, start_Intersection, end_Intersection, route_Intersections");
+    for(String s: routesOut)
+    {  
+        pw.println(s);
+    }
+    pw.flush();
+    pw.close();
+}
+
+void updateRoutes()
+{
+   
+    FileWriter outy;
     
-      saveTable(dataOut, "dataOut/routing.csv");
+    try
+    {
+      
+        //outy = new BufferedWriter(new FileWriter(sketchPath("")+"dataOut/" + routesOut, true));
+        outy = new FileWriter(sketchPath("")+"dataOut/" + routesOutString, true);
+        
+//        for(String s1: routes.keySet())
+//        {
+          String s1 = startOD;
+            for(String s2: routes.get(s1).keySet())
+            {
+                String routing = "";
+                String startIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
+                String endIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
+                for(String routep:routes.get(s1).get(s2).intersectionIDs)
+                {
+                    routing += routep;
+                    routing += "|";
+                    
+                    endIntersection = routep;
+                }
+                //println("s1s2 " + s1+" "+s2 + " " + routesOutString);
+                
+                String line = s1 + ",";
+                line += s2 + ",";
+                line += startIntersection + ",";
+                line += endIntersection + ",";
+                line += routing;
+                line +="\r\n";
+                outy.append(line);
+                outy.flush();
+                
+                //outy = null;
+                
+                //output.println("start_OD, endO_D, start_Intersection, end_Intersection, route_Intersections");
+                // output.println(line);
+                // output.flush();
+            }
+        //}
+        outy.close();
+        outy=null;
+        
+    }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+    }
+    
+
 }
 
 
