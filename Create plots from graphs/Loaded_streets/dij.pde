@@ -16,7 +16,7 @@ void routePrep()
         startString = ods.get(startOD).nearestIntersectionID;
         //println
         
-        println(startString + " " + pathString);
+        //println(startString + " " + pathString);
         setupDIJ(startString);
         countpaths = 0;
         

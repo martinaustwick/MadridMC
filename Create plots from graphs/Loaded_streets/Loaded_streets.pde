@@ -3,10 +3,10 @@ import java.util.*;
 /*
     High-level graph: OD/flows[weight]
 */
-String network = "MatrixOD_Flow.csv";
-String positions = "nodes.csv";
+String ODnetwork = "MatrixOD_Flow.csv";
+String ODpositions = "nodes.csv";
 HashMap<String, OD> ods = new HashMap<String, OD> ();
-HashMap<String, HashMap<String, Float>> flows;
+HashMap<String, HashMap<String, Flow>> flows;
 
 //route graph: IDed by intersection?
 String routeFile = "MadridRouting.csv";
@@ -75,9 +75,7 @@ int countpaths;
 Table dataOut;
 
 void setup()
-{
-    
-    
+{   
     float dlat = (latmax-latmin);
     float dlon =  (lonmax-lonmin);
     
@@ -94,9 +92,9 @@ void setup()
     
     
     
-    flows = new HashMap<String, HashMap<String, Float>>();
+    flows = new HashMap<String, HashMap<String, Flow>>();
     //makeUpflowss();
-    loadWeight();
+    loadFlows();
     
     
     rectMode(CENTER);
@@ -115,6 +113,7 @@ void draw()
     {
         background(255);
         drawEdges();
+        noLoop();
     }
     else
     {

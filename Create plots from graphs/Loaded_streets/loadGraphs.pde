@@ -7,24 +7,31 @@ HashMap<String, HashMap<String, Route>> loadRoutes(String filename)
     HashMap<String, HashMap<String, Route>> routesIn = new HashMap<String, HashMap<String, Route>>();
     Table table = loadTable(filename, "header");
 
-    //println(table.getRowCount() + " total rows in table"); 
+    // println("Route testing");
+    // println(ods.size() + " OD points");
+    // println(ods.size()*ods.size() + " possible routes");
+    // println(table.getRowCount() + " total rows in table"); 
   
-    for (TableRow row : table.rows()) {
-      
+    int i = 0;
+    for (TableRow row : table.rows()) 
+    {
           /*
                 At this point, we're pretty bound to a specific data structure
           */
-          String start_OD = row.getString("start_OD");
-          String end_OD = row.getString("end_OD");
+          String sod = Integer.toString(row.getInt("start_OD"));
+          String eod = Integer.toString(row.getInt("end_OD"));
           String [] routeArray = split(row.getString("route_intersections"), '|');
           ArrayList<String> routeList = new ArrayList<String>(Arrays.asList(routeArray));
+          
           Route r = new Route(routeList);
-          r.startOD = startOD;
-          r.endOD = endOD;
-          if(routesIn.get(startOD)==null)routesIn.put(startOD, new HashMap<String, Route>());
-          routesIn.get(startOD).put(endOD,r);
+          r.startOD = sod;
+          r.endOD = eod;
+          if(routesIn.get(sod)==null)routesIn.put(sod, new HashMap<String, Route>());
+          routesIn.get(sod).put(eod,r);
+          
+          //if(sod.equals(testOD)) println("testOD " + sod + " " + eod + " " + r.startOD + " " + r.endOD + " " + r.intersectionIDs.size());
     }
-    
+    println("routesize " + routesIn.size());
     return routesIn;
 }
 
@@ -37,7 +44,7 @@ void loadods()
         Flows = edges
     */
   
-   String [] sp = loadStrings(positions);
+   String [] sp = loadStrings(ODpositions);
    int IDcol = 0;
    int xcol = 1;
    int ycol = 2;
@@ -58,14 +65,14 @@ void loadods()
 }
 
 
-void loadWeight()
+void loadFlows()
 {
     int oIDcol = 0;
     int dIDcol = 1;
     int weightCol = 9;
     int starti = 1;
     
-    String [] sFlows = loadStrings(network);
+    String [] sFlows = loadStrings(ODnetwork);
     for(int i = starti; i<sFlows.length; i++)
     {
         String [] thisRow = split(sFlows[i], ",");
@@ -73,12 +80,20 @@ void loadWeight()
         String o = thisRow[oIDcol];
         String d = thisRow[dIDcol];
         float w = float(thisRow[weightCol]);
+        
+        Flow newFlow = new Flow();
+        newFlow.startOD = o;
+        newFlow.endOD = d;
+        newFlow.weight = w;
+        
+        //if(w>0)println(o + " " +  d + " " + w);
+        
         //ignore diagonals for the purpose of normalisations
         if(w>maxFlow) maxFlow = w;
-        if(flows.get(o)==null) flows.put(o, new HashMap<String, Float>());
-        flows.get(o).put(d, w*10);
-    }
-    
+        if(flows.get(o)==null) flows.put(o, new HashMap<String, Flow>());
+        flows.get(o).put(d, newFlow);
+        
+    }    
 }
 
 void loadStreets()

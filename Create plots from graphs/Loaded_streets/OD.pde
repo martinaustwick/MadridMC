@@ -33,6 +33,13 @@ class OD
     
 }
 
+class Flow
+{
+    String startOD, endOD;
+    float weight;
+    
+}
+
 
 void drawWeights()
 {
@@ -41,12 +48,12 @@ void drawWeights()
         for(String t: flows.get(s).keySet())
         {
           
-            float w = flows.get(s).get(t);
+            float w = flows.get(s).get(t).weight;
             if(abs(w)>0)
             {
                 
-                strokeWeight(maxThickness*flows.get(s).get(t)/maxFlow);
-                stroke(0, maxStroke*flows.get(s).get(t)/maxFlow);
+                strokeWeight(maxThickness*w/maxFlow);
+                stroke(0, maxStroke*w/maxFlow);
                 
                 
                 PVector o = ods.get(s).p;

@@ -198,8 +198,18 @@ void draw()
         path.add(startString);
         if(pathString.equals(startString))
         {
+          
+            /*
+                We know that the backwards pathfinding is complete
+                when we get to the first (origin) intersection
+            */
+            
             Intersection bp1;
             Intersection bp2 = new Intersection();
+            
+            /*
+                ForwardPath is the object that will be saved into the HashMap, and thence the table
+            */
             ArrayList<String> forwardPath = new ArrayList<String>();
             
             stroke(0);
@@ -213,7 +223,6 @@ void draw()
                 if(showPathfinding)
                 {
                     
-                    
                     bp1 = intersections.get(s1);
                     bp2 = intersections.get(s2);
                     line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
@@ -222,8 +231,13 @@ void draw()
                 forwardPath.add(s2);
             }
             forwardPath.add(startString);
-            if(routes.get(startString)==null) routes.put(startString, new HashMap<String, Route>());            
-            routes.get(startString).put(endString, new Route(forwardPath));
+            
+            /*
+                KEY BY OD
+            */
+            
+            if(routes.get(startOD)==null) routes.put(startOD, new HashMap<String, Route>());            
+            routes.get(startOD).put(endOD, new Route(forwardPath));
             strokeWeight(1);
             
             if(it2.hasNext())

@@ -5,18 +5,22 @@ void saveRoutes()
           for(String s2: routes.get(s1).keySet())
           {
               String routing = "";
+              String startIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
+              String endIntersection = routes.get(s1).get(s2).intersectionIDs.get(0);
               for(String routep:routes.get(s1).get(s2).intersectionIDs)
               {
                   routing += routep;
                   routing += "|";
+                  
+                  endIntersection = routep;
               }
               
               TableRow newRow = dataOut.addRow();
               //newRow.setString(
-              newRow.setString("start_OD", startOD);
-              newRow.setString("end_OD", endOD);
-              newRow.setString("start_intersection", s1);
-              newRow.setString("end_intersection", s2);
+              newRow.setString("start_OD", s1);
+              newRow.setString("end_OD", s2);
+              newRow.setString("start_intersection", startIntersection);
+              newRow.setString("end_intersection", endIntersection);
               newRow.setString("route_intersections", routing);
           }
       }
