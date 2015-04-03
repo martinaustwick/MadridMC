@@ -72,7 +72,7 @@ void setup()
 {
     routesOutString = int(random(10000)) + routesOutString;
     PrintWriter output = createWriter("dataOut/" + routesOutString); 
-    output.println("start_OD, endO_D, start_Intersection, end_Intersection, route_Intersections");
+    output.println("start_OD, end_OD, start_intersection, end_intersection, route_intersections");
     output.flush();
     output.close();
     

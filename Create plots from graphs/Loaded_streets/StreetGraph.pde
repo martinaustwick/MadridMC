@@ -62,75 +62,6 @@ class Edge
 
 
 
-HashMap<String, Intersection> createIntersections(HashMap<String, StreetSegment> streetSegz)
-{
-    int intersectionCount = 0;
-    
-    HashMap<String, Intersection> ints =  new HashMap<String, Intersection> ();
-    
-    for(String edgeName:streetSegz.keySet())
-    {
-        StreetSegment edge = streetSegz.get(edgeName);
-        
-        /*
-            Create intersection
-        */
-        
-        PVector start = edge.screenPoints.get(0);
-        PVector end = edge.screenPoints.get(edge.points.size()-1);
-        
-        String startIntersectionName = "";
-        String endIntersectionName = "";
-        
-        
-        
-            for(String intName:ints.keySet())
-            {
-                Intersection i = ints.get(intName);
-                if(start.equals(i.p))
-                {
-                    startIntersectionName = intName;
-                }
-                
-                if(end.equals(i.p))
-                {
-                    endIntersectionName = intName;
-                }
-            }
-        
-        
-        if(startIntersectionName.equals("")) 
-        {
-            startIntersectionName = Integer.toString(intersectionCount);
-            Intersection newint = new Intersection();
-            newint.ID = startIntersectionName;
-            newint.p = start;
-            ints.put(newint.ID, newint);
-            
-            intersectionCount++;
-            
-        }
-        
-        if(endIntersectionName.equals("")) 
-        {
-            endIntersectionName = Integer.toString(intersectionCount);
-            Intersection newint = new Intersection();
-            newint.ID = endIntersectionName;
-            newint.p = end;
-            ints.put(newint.ID, newint);
-            
-            intersectionCount++;
-            
-        }
-        
-        ints.get(startIntersectionName).destinations.add(endIntersectionName);
-        ints.get(endIntersectionName).destinations.add(startIntersectionName);
-    }
-    return ints;
-    
-}
-
-
 void createGraph(HashMap<String, StreetSegment> streetSegz)
 {
     int intersectionCount = 0;
@@ -140,14 +71,14 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
     
     for(String edgeName:streetSegz.keySet())
     {
-        StreetSegment edge = streetSegz.get(edgeName);
+        StreetSegment segment = streetSegz.get(edgeName);
         
         /*
             Create intersection
         */
         
-        PVector start = edge.screenPoints.get(0);
-        PVector end = edge.screenPoints.get(edge.points.size()-1);
+        PVector start = segment.screenPoints.get(0);
+        PVector end = segment.screenPoints.get(segment.points.size()-1);
         
         String startIntersectionName = "";
         String endIntersectionName = "";
@@ -201,13 +132,20 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         intersections.get(endIntersectionName).destinations.add(startIntersectionName);
         
         /*
+              Assign start and end intersections to segments
+        */
+        
+        segment.startIntersection = startIntersectionName;
+        segment.endIntersection = endIntersectionName;
+        
+        /*
             create edges
         */
         
         Edge eforward = new Edge();
         eforward.startID = startIntersectionName;
         eforward.endID = endIntersectionName;
-        eforward.cost = edge.costs.x;
+        eforward.cost = segment.costs.x;
         
         if(edges.get(startIntersectionName)==null) edges.put(startIntersectionName, new HashMap<String, Edge>());
         edges.get(startIntersectionName).put(endIntersectionName, eforward);
@@ -216,7 +154,7 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         Edge eback = new Edge();
         eback.startID = endIntersectionName;
         eback.endID = startIntersectionName;
-        eback.cost = edge.costs.y;
+        eback.cost = segment.costs.y;
         
         if(edges.get(endIntersectionName)==null) edges.put(endIntersectionName, new HashMap<String, Edge>());
         edges.get(endIntersectionName).put(startIntersectionName, eback);

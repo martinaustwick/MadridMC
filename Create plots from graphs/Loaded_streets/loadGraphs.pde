@@ -23,12 +23,14 @@ HashMap<String, HashMap<String, Route>> loadRoutes(String filename)
           String [] routeArray = split(row.getString("route_intersections"), '|');
           ArrayList<String> routeList = new ArrayList<String>(Arrays.asList(routeArray));
           
-          Route r = new Route(routeList);
-          r.startOD = sod;
-          r.endOD = eod;
-          if(routesIn.get(sod)==null)routesIn.put(sod, new HashMap<String, Route>());
-          routesIn.get(sod).put(eod,r);
-          
+          if(!sod.equals(eod))
+          {
+              Route r = new Route(routeList);
+              r.startOD = sod;
+              r.endOD = eod;
+              if(routesIn.get(sod)==null)routesIn.put(sod, new HashMap<String, Route>());
+              routesIn.get(sod).put(eod,r);
+          }
           //if(sod.equals(testOD)) println("testOD " + sod + " " + eod + " " + r.startOD + " " + r.endOD + " " + r.intersectionIDs.size());
     }
     println("routesize " + routesIn.size());
@@ -89,7 +91,7 @@ void loadFlows()
         //if(w>0)println(o + " " +  d + " " + w);
         
         //ignore diagonals for the purpose of normalisations
-        if(w>maxFlow) maxFlow = w;
+        if(w>maxFlow && !o.equals(d)) maxFlow = w;
         if(flows.get(o)==null) flows.put(o, new HashMap<String, Flow>());
         flows.get(o).put(d, newFlow);
         

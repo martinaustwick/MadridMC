@@ -35,8 +35,8 @@ String edgesOut = "edges.csv";
 
 float maxFlow = 0;
 float maxStroke = 30;
-float curviness = 0.2;
-float maxThickness = 1;
+float curviness = 0.0;
+float maxThickness = 10;
 
 float streetAlpha = 100;
 
@@ -112,7 +112,8 @@ void draw()
     if(loadRoutes)
     {
         background(255);
-        drawEdges();
+        //drawEdges();
+        drawLoadedSegments();
         noLoop();
     }
     else

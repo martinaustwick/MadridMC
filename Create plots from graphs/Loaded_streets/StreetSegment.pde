@@ -6,6 +6,7 @@ class StreetSegment
     PVector costs;
     String ID;
     color c;
+    String startIntersection, endIntersection;
     
     StreetSegment(ArrayList<PVector> pointsIn)
     {
@@ -33,11 +34,35 @@ class StreetSegment
             PVector p1 = screenPoints.get(i-1);
             PVector p2 = screenPoints.get(i); 
             bline(p1, p2);
-            bline(p2, p1);
         }
         
         fdiff = (costs.y)/(costs.x+costs.y);
 
+        
+        for(int i = 1; i<screenPoints.size(); i++)
+        {
+            PVector p1 = screenPoints.get(i-1);
+            PVector p2 = screenPoints.get(i); 
+            bline(p2, p1);
+        }
+    }
+    
+    void displayForward()
+    {
+        
+   
+        for(int i = 1; i<screenPoints.size(); i++)
+        {
+            PVector p1 = screenPoints.get(i-1);
+            PVector p2 = screenPoints.get(i); 
+            bline(p1, p2);
+        }
+        
+        
+    }
+    
+    void displayBack()
+    {
         
         for(int i = 1; i<screenPoints.size(); i++)
         {
