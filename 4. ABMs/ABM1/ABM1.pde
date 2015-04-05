@@ -113,7 +113,8 @@ void setup()
     
     clock = 0;
     
-    testAgent();
+    //testAgent();
+    agents =  new ArrayList<Agent>();
     drawLoadedSegments();
 }
 
@@ -129,6 +130,7 @@ void draw()
         
         //drawBadUns();
         //noLoop();
+        evenProb();
     }
     else
     {
