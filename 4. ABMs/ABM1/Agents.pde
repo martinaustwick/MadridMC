@@ -7,6 +7,7 @@ class Agent
     float startTime, segmentStartTime, segmentDuration;
     int segmentInt;
     boolean reachedDestination;
+    color c;
     
     Agent(String sod, String eod)
     {
@@ -24,12 +25,16 @@ class Agent
         p = intersections.get(prevIntersection).p;
         
         reachedDestination=false;
+        
+        c =  color(random(255), 255, 255, 30);
+        c =  color(120, 255, 120, 1);
     }
     
     void display()
     {
         noStroke();
-        fill(0,255,255);
+        //fill(0,255,255);
+        fill(c);
         ellipse(p.x, p.y, 5, 5);
     }
     
@@ -82,7 +87,7 @@ void testAgent()
 
 void evenProb()
 {
-    float prob = 100000000;
+    float prob = 1000000;
     for(String ods1: flows.keySet())
     {
         for(String ods2: flows.get(ods1).keySet())
@@ -92,6 +97,25 @@ void evenProb()
                   So we have watch out for those guyz
               */
               if(random(prob)<flows.get(ods1).get(ods2).weight && !ods1.equals(ods2) && routes.get(ods1).get(ods2).intersectionIDs.size()>1) agents.add(new Agent(ods1, ods2));
+        }
+    }
+}
+
+void evenProb()
+{
+    float prob = 1000000;
+    for(String ods1: flows.keySet())
+    {
+        for(String ods2: flows.get(ods1).keySet())
+        {
+              /*
+                  Some points with different ODs have the same start intersection
+                  So we have watch out for those guyz
+              */
+              if(!ods1.equals(ods2) && routes.get(ods1).get(ods2).intersectionIDs.size()>1) 
+              {
+                agents.add(new Agent(ods1, ods2));
+              }
         }
     }
 }
@@ -116,5 +140,5 @@ void tidyAgents(ArrayList<Agent> as)
           i--;
         }
     }
-    println(as.size());
+    println("Agent sizee " + as.size());
 }

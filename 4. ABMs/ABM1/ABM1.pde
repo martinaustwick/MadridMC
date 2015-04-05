@@ -115,7 +115,7 @@ void setup()
     
     //testAgent();
     agents =  new ArrayList<Agent>();
-    drawLoadedSegments();
+    //drawLoadedSegments();
 }
 
 void draw()
