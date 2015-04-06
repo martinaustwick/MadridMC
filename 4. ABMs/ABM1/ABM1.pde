@@ -38,7 +38,7 @@ float maxStroke = 30;
 float curviness = 0.0;
 float maxThickness = 10;
 
-float streetAlpha = 100;
+float streetAlpha = 30;
 
 /*
 Latlon window
@@ -116,10 +116,16 @@ void setup()
     //testAgent();
     agents =  new ArrayList<Agent>();
     //drawLoadedSegments();
+    
+    background(255);
+    frameRate(120);
 }
 
 void draw()
 {
+    noStroke();
+    fill(255,10);
+    rect(width/2,height/2,width, height);
     
     stroke(0);
     if(loadRoutes)
@@ -130,7 +136,8 @@ void draw()
         
         //drawBadUns();
         //noLoop();
-        evenProb();
+        //evenProb();
+        gaussProb();
     }
     else
     {
@@ -139,6 +146,6 @@ void draw()
     
     if(capture) saveFrame("images/######.jpg");
     displayAgents(agents);
-    
+    text(clock, 0, height - 20);
     clock+=increment;
 }
