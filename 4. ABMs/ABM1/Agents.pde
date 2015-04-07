@@ -28,7 +28,7 @@ class Agent
         //float f =random(255);
         //c =  color(100, 255, 150);
         
-        c =  color(120, 255, 200, 10);
+        c =  color(100, 255, 150, 10);
         isNew = true;
         
         /*
@@ -48,35 +48,16 @@ class Agent
     void display()
     {
         
-        stroke(c);
+        stroke(hue(c), saturation(c), brightness(c), 10);
         strokeWeight(5);
         point(p.x, p.y);
         
-        //fill(0,255,255);
-        //fill(c);
-        //ellipse(p.x, p.y, 5, 5);
-//        stroke(0);
-//        ArrayList<String> into = routes.get(startOD).get(endOD).intersectionIDs;
-//        for(int i = 1; i<into.size(); i++)
-//        {
-//            PVector p1 = intersections.get(into.get(i-1)).p;
-//            PVector p2 = intersections.get(into.get(i)).p;
-//            line(p1.x, p1.y, p2.x, p2.y);
-//        }
-//        
-//        if(proportion>1){
-//          //stroke(0,255,100);
-//          stroke(0);
-//          ArrayList<String> into = routes.get(startOD).get(endOD).intersectionIDs;
-//          for(int i = 1; i<into.size(); i++)
-//          {
-//              PVector p1 = intersections.get(into.get(i-1)).p;
-//              PVector p2 = intersections.get(into.get(i)).p;
-//              line(p1.x, p1.y, p2.x, p2.y);
-//          }
-////          stroke(0);
-//          line(intersections.get(nextIntersection).p.x, intersections.get(nextIntersection).p.y, p.x, p.y);
-//        }
+        
+        
+        noStroke();
+        fill(hue(c), saturation(c), brightness(c), 1);
+        ellipse(p.x,p.y,10,10);
+ 
     }
     
     void move()
@@ -85,11 +66,17 @@ class Agent
         //println("clock " +  (clock-segmentStartTime) + " " + segmentDuration);
         proportion = (clock-segmentStartTime)/segmentDuration;
         //println(proportion);
+        stroke(hue(c), saturation(c), brightness(c), 1);
+        PVector p1 = intersections.get(prevIntersection).p;
         while(proportion>=1)
         {
-//            PVector p1 = intersections.get(prevIntersection).p;
-//            PVector p2 = intersections.get(nextIntersection).p;
-//            line(p1.x, p1.y, p2.x, p2.y);  
+            /*
+              drawing in lines for skipped segments more weakly
+            */
+            
+            p1 = intersections.get(prevIntersection).p;
+            PVector p2 = intersections.get(nextIntersection).p;
+            line(p1.x, p1.y, p2.x, p2.y);  
           
             getNewSegment();
             proportion = (clock-segmentStartTime)/segmentDuration;
@@ -98,7 +85,8 @@ class Agent
             
         }
         p = PVector.lerp(intersections.get(prevIntersection).p,intersections.get(nextIntersection).p, proportion);
-        
+        strokeWeight(5);
+        line(p1.x, p1.y, p.x, p.y);  
         
     }
     
@@ -137,11 +125,13 @@ void testAgent()
 
 void gaussProb()
 {
-    float prob = 0.001;
-    float mean = 1000000;
-    float sd = 250000;
+    
     float xbar = (clock-mean)/sd;
     float currentProb = prob*exp(-0.5*xbar*xbar);
+    /*
+        normalising for sigma
+    */
+    currentProb/=sd;
     //currentProb = prob;
    
     for(String ods1: flows.keySet())
@@ -152,9 +142,9 @@ void gaussProb()
                   Some points with different ODs have the same start intersection
                   So we have watch out for those guyz
               */
-              float chanco = random(currentProb);
+              float ptij = currentProb*flows.get(ods1).get(ods2).weight;
               //println(chanco);
-              if((chanco>(1.0/flows.get(ods1).get(ods2).weight)) && !ods1.equals(ods2) && routes.get(ods1).get(ods2).intersectionIDs.size()>1) 
+              if((random(1)<ptij) && !ods1.equals(ods2) && routes.get(ods1).get(ods2).intersectionIDs.size()>1) 
               {
                   //println("adding agents");
                   //println(chanco + " " + flows.get(ods1).get(ods2).weight);

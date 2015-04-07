@@ -81,6 +81,7 @@ Table dataOut;
 float clock;
 float increment = 1000;
 
+
 void setup()
 {   
     float dlat = (latmax-latmin);
@@ -124,7 +125,7 @@ void setup()
 void draw()
 {
     noStroke();
-    fill(255,10);
+    fill(255,100);
     rect(width/2,height/2,width, height);
     
     stroke(0);
@@ -146,6 +147,58 @@ void draw()
     
     if(capture) saveFrame("images/######.jpg");
     displayAgents(agents);
-    text(clock, 0, height - 20);
+    
+    drawGraph();
+    drawClock();
+    if(capture) saveFrame("images/" + clock + ".jpg");
     clock+=increment;
 }
+
+void drawClock()
+{  
+//    fill(255);
+//    rect(50, height-20, 100, 40);
+    fill(0);
+    text(int(clock/1000), 30, height - 20);
+}
+
+float prob = 1.0;
+float sd =    100000;
+float mean = 3*sd;
+
+float [] gauss;
+    
+void drawGraph()
+{
+    int thick = 1;
+    
+    int yheight = 50;
+    
+    float maxTime = 5000000;
+    
+    if(gauss==null)
+    {
+        gauss = new float [width/thick];
+        for(int i = 0; i<gauss.length; i++)
+        {
+            float x = map(i, 0, gauss.length, 0, maxTime);
+            float xbar = (x-mean)/sd; 
+            gauss[i] = yheight*exp(-0.5*xbar*xbar);
+        }
+    }
+    
+    fill(255);
+    rect(width/2, height-0.5*yheight, width, yheight);
+    
+    stroke(0);
+    strokeWeight(1);
+    for(int i = 1; i<gauss.length; i++)
+    {
+      line((i-1)*thick, height-gauss[i-1], i*thick, height-gauss[i]);   
+    }
+    
+    float x = map(clock, 0, maxTime, 0, width);
+    line(x, height, x, height-yheight);  
+}
+
+
