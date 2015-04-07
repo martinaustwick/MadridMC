@@ -4,7 +4,7 @@ class Agent
 {
     PVector p;
     String startOD, endOD, prevIntersection, nextIntersection;
-    float startTime, segmentStartTime, segmentDuration, proportion;
+    float startTime, segmentStartTime, segmentDuration, proportion, speed;
     int segmentInt;
     boolean reachedDestination, isNew;
     color c;
@@ -30,6 +30,7 @@ class Agent
         
         c =  color(100, 255, 150, 10);
         isNew = true;
+        speed = 1.0;
         
         /*
             Check start and end
@@ -47,16 +48,39 @@ class Agent
     
     void display()
     {
+        PVector p1 = intersections.get(prevIntersection).p;
+        PVector p2 = intersections.get(nextIntersection).p;
         
-        stroke(hue(c), saturation(c), brightness(c), 10);
-        strokeWeight(5);
+        stroke(hue(c), saturation(c), brightness(c), 20);
+        strokeWeight(3);
+        line(p1.x, p1.y, p2.x, p2.y);
+        
+        stroke(0, saturation(c), brightness(c), 1);
+        strokeWeight(15);
+        line(p1.x, p1.y, p2.x, p2.y);
+//        
+        stroke(0);
+        strokeWeight(1);
         point(p.x, p.y);
         
         
         
-        noStroke();
-        fill(hue(c), saturation(c), brightness(c), 1);
-        ellipse(p.x,p.y,10,10);
+        
+//        strokeWeight(5);
+//        stroke(hue(c), saturation(c), brightness(c), 2);
+//        //ellipse(p.x, p.y, 10, 10);
+//        point(p.x, p.y);
+        
+//        strokeWeight(10);
+//        stroke(hue(c), saturation(c), brightness(c), 2);
+//        //ellipse(p.x, p.y, 20, 20);
+//        point(p.x, p.y);
+        
+        
+//        strokeWeight(15);
+//        stroke(0, saturation(c), brightness(c), 1);
+//        //ellipse(p.x, p.y, 20, 20);
+//        point(p.x, p.y);
  
     }
     
@@ -64,7 +88,7 @@ class Agent
     {
         strokeWeight(1);
         //println("clock " +  (clock-segmentStartTime) + " " + segmentDuration);
-        proportion = (clock-segmentStartTime)/segmentDuration;
+        proportion = speed*(clock-segmentStartTime)/segmentDuration;
         //println(proportion);
         stroke(hue(c), saturation(c), brightness(c), 1);
         PVector p1 = intersections.get(prevIntersection).p;
@@ -79,7 +103,7 @@ class Agent
             line(p1.x, p1.y, p2.x, p2.y);  
           
             getNewSegment();
-            proportion = (clock-segmentStartTime)/segmentDuration;
+            proportion = speed*(clock-segmentStartTime)/segmentDuration;
             
             
             

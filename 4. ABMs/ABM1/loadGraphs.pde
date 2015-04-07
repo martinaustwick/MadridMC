@@ -59,7 +59,7 @@ void loadods()
        //println(sp[i]);
        String [] l = split(sp[i], ",");
        float x = map(float(l[xcol]), lonmin, lonmax, 0, width);
-       float y = map(float(l[ycol]), latmin, latmax, height, 0);
+       float y = map(float(l[ycol]), latmin, latmax, h, 0);
        
        OD od = new OD();
        od.p = new PVector(x,y);

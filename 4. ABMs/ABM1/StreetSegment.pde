@@ -16,7 +16,7 @@ class StreetSegment
         {
             points.add(p.get());
             float x = map(p.x, lonmin, lonmax, 0, width);
-            float y = map(p.y, latmin, latmax, height, 0);
+            float y = map(p.y, latmin, latmax, h, 0);
             screenPoints.add(new PVector(x,y));
         }
         colorMode(HSB);
