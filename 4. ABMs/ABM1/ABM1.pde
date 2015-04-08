@@ -1,5 +1,5 @@
 import java.util.*;
-float sd =    1000000;
+float sd =    100000;
 
 
 /*
@@ -128,7 +128,7 @@ void setup()
 void draw()
 {
     noStroke();
-    fill(255, 200);
+    fill(255, 100);
     rect(width/2,height/2,width, height);
     
     stroke(0);

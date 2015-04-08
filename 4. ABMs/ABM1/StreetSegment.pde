@@ -23,6 +23,17 @@ class StreetSegment
         c= color(random(255), 255, 200);
     }
     
+    void lines()
+    {
+        
+        for(int i = 1; i<screenPoints.size(); i++)
+        {
+            PVector p1 = screenPoints.get(i-1);
+            PVector p2 = screenPoints.get(i); 
+            line(p2.x, p2.y, p1.x, p1.y);
+        }
+    }
+    
     void display()
     {
         

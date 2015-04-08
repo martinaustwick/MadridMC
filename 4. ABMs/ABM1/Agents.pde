@@ -63,25 +63,20 @@ class Agent
         strokeWeight(1);
         point(p.x, p.y);
         
-        
-        
-        
-//        strokeWeight(5);
-//        stroke(hue(c), saturation(c), brightness(c), 2);
-//        //ellipse(p.x, p.y, 10, 10);
-//        point(p.x, p.y);
-        
-//        strokeWeight(10);
-//        stroke(hue(c), saturation(c), brightness(c), 2);
-//        //ellipse(p.x, p.y, 20, 20);
-//        point(p.x, p.y);
-        
-        
-//        strokeWeight(15);
-//        stroke(0, saturation(c), brightness(c), 1);
-//        //ellipse(p.x, p.y, 20, 20);
-//        point(p.x, p.y);
  
+    }
+    
+    void segment()
+    {
+         stroke(0, 10);
+         strokeWeight(1);
+         streetNetwork.get(edges.get(prevIntersection).get(nextIntersection).segmentID).lines();
+         
+         stroke(0, 1);
+         strokeWeight(10);
+         streetNetwork.get(edges.get(prevIntersection).get(nextIntersection).segmentID).lines();
+         
+         
     }
     
     void move()
@@ -223,7 +218,8 @@ void displayAgents(ArrayList<Agent> asd)
     for(Agent a:asd)
     {
         a.move();
-        a.display();
+        if(showStreets) a.segment();
+        else a.display();
     }
     tidyAgents(asd);
     

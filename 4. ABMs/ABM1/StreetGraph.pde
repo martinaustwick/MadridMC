@@ -52,7 +52,7 @@ class Intersection
 class Edge
 {
     float weight, cost, time;
-    String startID, endID;
+    String startID, endID, segmentID;
     
     Edge()
     {
@@ -146,6 +146,7 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         eforward.startID = startIntersectionName;
         eforward.endID = endIntersectionName;
         eforward.cost = segment.costs.x;
+        eforward.segmentID = segment.ID;
         
         if(edges.get(startIntersectionName)==null) edges.put(startIntersectionName, new HashMap<String, Edge>());
         edges.get(startIntersectionName).put(endIntersectionName, eforward);
@@ -155,6 +156,7 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         eback.startID = endIntersectionName;
         eback.endID = startIntersectionName;
         eback.cost = segment.costs.y;
+        eback.segmentID = segment.ID;
         
         if(edges.get(endIntersectionName)==null) edges.put(endIntersectionName, new HashMap<String, Edge>());
         edges.get(endIntersectionName).put(startIntersectionName, eback);
