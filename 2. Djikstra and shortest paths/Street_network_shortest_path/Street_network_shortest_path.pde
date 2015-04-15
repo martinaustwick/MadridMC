@@ -7,10 +7,7 @@ import java.io.*;
 HashMap<String, OD> ods = new HashMap<String, OD> ();
 HashMap<String, HashMap<String, Float>> flows;
 
-HashMap<String, StreetSegment> streetNetwork;
 
-HashMap<String, Intersection> intersections;
-HashMap<String, HashMap<String, Edge>> edges;
 
 //OD graph
 String network = "MatrixOD_Flow.csv";
@@ -19,9 +16,17 @@ String positions = "nodes.csv";
 //intersection graph
 String intersectionFile = "intersections.csv";
 String intersectionEdgeFile = "edges.csv";
+HashMap<String, Intersection> intersections;
+HashMap<String, HashMap<String, Edge>> edges;
+
+//dual graph
+
+HashMap<String, DualNode> dualNodes;
+HashMap<String, HashMap<String, DualEdge>> dualEdges;
 
 //street graph
 String streetFile = "Street Network with pseudotimes.csv";
+HashMap<String, StreetSegment> streetNetwork;
 
 
 /*
@@ -88,6 +93,8 @@ void setup()
     
     //intersections = createIntersections(streetNetwork);
     createGraph(streetNetwork);
+    //createDualFromSegments();
+    
     for(OD od:ods.values())
     {
         od.findNearestIntersection(intersections);
@@ -118,16 +125,7 @@ void setup()
     setupDIJ(startString);
     countpaths = 0;
     
-    /*
-        Readying for data outputs
-    */
-    
-    // dataOut = new Table();
-    // dataOut.addColumn("start_OD");
-    // dataOut.addColumn("end_OD");
-    // dataOut.addColumn("start_intersection");
-    // dataOut.addColumn("end_intersection");
-    // dataOut.addColumn("route_intersections");
+ 
 }
 
 float clock = 0;

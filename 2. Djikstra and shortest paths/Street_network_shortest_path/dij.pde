@@ -190,6 +190,19 @@ void showDIJ()
                 for(Intersection i: intersections.values())
                 {
                     i.display();
+                    stroke(0, 100);
+//                    for(String s: i.destinations)
+//                    {
+//                        PVector p = intersections.get(s).p;
+//                        line(p.x, p.y, i.p.x, i.p.y);
+//                    }
                 }
+                
+                for(DualNode d: dualNodes.values())
+                {
+                    d.show();
+                }
+                
+                
             }
 }
