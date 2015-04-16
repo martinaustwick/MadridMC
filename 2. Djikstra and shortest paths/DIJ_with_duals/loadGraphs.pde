@@ -93,6 +93,7 @@ void loadStreets()
         ss.ID = l[IDcol];
         //println(ss.costs);
         streetNetwork.put(l[IDcol], ss);
+        if(!ss.ID.equals(l[IDcol]))println(l[IDcol]);
    }
 }
 

@@ -29,7 +29,7 @@ class Node
         
         if(selecting) {
           noStroke();
-          fill((d*totalCostScale)%255, 255, 200, 100);
+          fill((d*totalCostScale)%255, 255, 200);
           //fill(0, 255-d*totalCostScale, 150, 100);
           //stroke(120, 255, 0, 100);
           if(d>9999999) fill(0, 0, 100, 100);
