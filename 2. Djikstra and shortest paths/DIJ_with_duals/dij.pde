@@ -1,5 +1,10 @@
+int limitPathCount = 30000;
+int pathFindCount;
+
 void setupDIJ(String originID, HashMap<String, Node> nodes)
 {
+    pathFindCount = 0;
+    
     clock = millis();
     for(Node n: nodes.values())
     {
@@ -35,7 +40,7 @@ ArrayList<String> wList, newwList;
 
 boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge>> edgesIn)
 {
-    
+    pathFindCount++;
     /*
         create a watchlist of candidate intersection IDs
     */
@@ -81,7 +86,7 @@ boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge
                 break;
             }
         }
-        
+        //if(pathFindCount>limitPathCount) exhausted = true;
         
         return exhausted;
      
@@ -90,7 +95,6 @@ boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge
 String reverseDIJstep(String destID, HashMap<String, Node> nodes)
 {
     Node chaini = nodes.get(destID);
-    //println("destID:"+destID + "/ " + intersections.size());
     int shortestInt = floor(random(chaini.destinations.size()));
     float currentD = chaini.d;
     float shortestIntersection = nodes.get(chaini.destinations.get(0)).d;
@@ -100,9 +104,9 @@ String reverseDIJstep(String destID, HashMap<String, Node> nodes)
     {
         //String s = chaini.destinations.get(i);
         //println(currentD + " " + intersections.get(s).d);
-        if(intersections.get(s).d<currentD) 
+        if(nodes.get(s).d<currentD) 
         {
-            currentD = intersections.get(s).d;
+            currentD = nodes.get(s).d;
             shortestString = s;
             
         }

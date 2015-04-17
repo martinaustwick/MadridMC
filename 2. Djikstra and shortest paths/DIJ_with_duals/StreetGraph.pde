@@ -6,6 +6,7 @@ class Node
     ArrayList<String> destinations;
     PVector p;    
     Boolean isOD, seen;
+    String dualConnection1, dualConnection2;
     
     Boolean selecting = false;
     
@@ -26,9 +27,10 @@ class Node
           //strokeWeight(10);
         }
         else noStroke();
-        
+        fill(0,10);
         if(selecting) {
           //noStroke();
+          //fill(0,10);
           fill((d*totalCostScale)%255, 255, 200);
           //fill(0, 255-d*totalCostScale, 150, 100);
           //stroke(120, 255, 0, 100);
@@ -40,6 +42,14 @@ class Node
           rect(p.x, p.y, 5,5);
         //}
         
+        if(abs(mouseX-p.x)<5 && abs(mouseY-p.y)<5)
+        { 
+//            fill(255);
+//            rect(p.x, p.y, 200, 50);
+            fill(0);
+            text((ID + " " + destinations), p.x, p.y);
+            text((ID + " " + destinations), 0, 20);
+        }
 
 //          if(showIntersectionJoins)
 //          {
@@ -125,7 +135,6 @@ HashMap<String, Node> createIntersections(HashMap<String, StreetSegment> streetS
         ints.get(endIntersectionName).destinations.add(startIntersectionName);
     }
     return ints;
-    
 }
 
 

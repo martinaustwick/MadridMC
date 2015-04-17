@@ -208,7 +208,6 @@ void draw()
             path.add(pathString);
             if(dual) pathString =  reverseDIJstep(pathString, dualNodes);
             else pathString =  reverseDIJstep(pathString, intersections);
-            println("oathing");
         }
         //println(millis()-startPath);
         path.add(startString);
