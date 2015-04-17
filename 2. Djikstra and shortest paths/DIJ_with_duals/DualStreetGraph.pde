@@ -1,4 +1,5 @@
-
+float rightCost = 10;
+float leftCost = 20;
 
 void createDualFromSegments()
 {
@@ -10,14 +11,14 @@ void createDualFromSegments()
     
     println("creating dual");
     
-    String tempID = "6149";
-    println("Bad node: end: " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " start: " + streetNetwork.get(tempID).screenPoints.get(0));
-    tempID = "5938";
-    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
-    tempID = "6188";
-    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
-    tempID = "6266";
-    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
+//    String tempID = "6149";
+//    println("Bad node: end: " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " start: " + streetNetwork.get(tempID).screenPoints.get(0));
+//    tempID = "5938";
+//    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
+//    tempID = "6188";
+//    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
+//    tempID = "6266";
+//    println("Close node " + streetNetwork.get(tempID).screenPoints.get(streetNetwork.get(tempID).screenPoints.size()-1) + " " + streetNetwork.get(tempID).screenPoints.get(0));
 
     
     
@@ -61,8 +62,8 @@ void createDualFromSegments()
             /*
               For turning-based costs
             */
-            PVector forward1 = PVector.sub(end,start);
-            PVector back1 = PVector.sub(start,end);
+            PVector forward1 = PVector.sub(end, seg.screenPoints.get(seg.points.size()-1));
+            PVector back1 = PVector.sub(start,seg.screenPoints.get(1));
             
             for(String streetSegName2:streetNetwork.keySet())
             {
@@ -77,6 +78,14 @@ void createDualFromSegments()
                     //forward edge
                     Edge de = new Edge();
                     de.cost = 0.5*(seg.costs.x + seg2.costs.x);
+                    
+                    //turning costs
+                    PVector forward2 = PVector.sub(seg2.screenPoints.get(0), seg2.screenPoints.get(0));
+                    float turn = forward2.heading() - forward1.heading();
+                    if(turn>PI/4) de.cost+=rightCost;
+                    else if(turn>3*PI/4 && turn<7*PI/4) de.cost+=leftCost;
+                    
+                    
                     de.startID = streetSegName;
                     de.endID = streetSegName2;
                     de.ID = Integer.toString(dualEdgeID);
