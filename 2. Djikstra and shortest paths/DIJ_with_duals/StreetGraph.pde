@@ -21,14 +21,14 @@ class Node
     {
         //stroke(0);
         
-        if(seen){
+        if(!seen){
           stroke(0);
-          strokeWeight(10);
+          //strokeWeight(10);
         }
         else noStroke();
         
         if(selecting) {
-          noStroke();
+          //noStroke();
           fill((d*totalCostScale)%255, 255, 200);
           //fill(0, 255-d*totalCostScale, 150, 100);
           //stroke(120, 255, 0, 100);
@@ -208,7 +208,7 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         eforward.startID = startIntersectionName;
         eforward.endID = endIntersectionName;
         eforward.cost = edge.costs.x;
-        edge.ID = Integer.toString(edgeCount);
+        eforward.ID = Integer.toString(edgeCount);
         edgeCount++;
         
         if(edges.get(startIntersectionName)==null) edges.put(startIntersectionName, new HashMap<String, Edge>());
@@ -219,6 +219,8 @@ void createGraph(HashMap<String, StreetSegment> streetSegz)
         eback.startID = endIntersectionName;
         eback.endID = startIntersectionName;
         eback.cost = edge.costs.y;
+        eback.ID = Integer.toString(edgeCount);
+        edgeCount++;;
         
         if(edges.get(endIntersectionName)==null) edges.put(endIntersectionName, new HashMap<String, Edge>());
         edges.get(endIntersectionName).put(startIntersectionName, eback);

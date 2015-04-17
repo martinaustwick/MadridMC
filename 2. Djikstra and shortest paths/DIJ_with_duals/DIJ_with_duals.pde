@@ -192,6 +192,9 @@ void draw()
         //println(millis() - startTime);
         if(dual) DIJforwardComplete = handij(dualNodes, dualEdges);
         else DIJforwardComplete = handij(intersections, edges);
+        
+//        if(DIJforwardComplete) println("completed forward");
+//        else println("Not forwarded " + frameCount);
     }
     else   
     {
@@ -205,6 +208,7 @@ void draw()
             path.add(pathString);
             if(dual) pathString =  reverseDIJstep(pathString, dualNodes);
             else pathString =  reverseDIJstep(pathString, intersections);
+            println("oathing");
         }
         //println(millis()-startPath);
         path.add(startString);
@@ -224,9 +228,7 @@ void draw()
             */
             ArrayList<String> forwardPath = new ArrayList<String>();
             
-            //stroke(0);
             strokeWeight(2);
-            //forwardPath.add(startString);
             for(int i = path.size()-1; i>0; i--)
             {
                 String s1 = path.get(i-1);
@@ -243,6 +245,7 @@ void draw()
                     
                     
                     line(bp1.p.x, bp1.p.y, bp2.p.x, bp2.p.y);
+                    //println("pathy");
                 }
                 
                 forwardPath.add(s2);

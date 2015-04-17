@@ -9,7 +9,7 @@ void createDualFromSegments()
     int dualEdgeID = 0;
     
     println("creating dual");
-    
+    int mismatchCount = 0;
     for(String streetSegName:streetNetwork.keySet())
     {
         StreetSegment seg = streetNetwork.get(streetSegName);
@@ -24,23 +24,17 @@ void createDualFromSegments()
         dNode.ID = streetSegName;
         dualNodes.put(streetSegName, dNode);
         
-        if(streetSegName.equals("11679")) println("*********************** " + streetSegName);
+        /*
+            This is fixed, retained for legacy
+        */        
+        if(!seg.ID.equals(streetSegName)) 
+        {
+          println("Streetseg  " + streetSegName + " seg ID " + seg.ID + " count " + mismatchCount + "/" + streetNetwork.size());
+          mismatchCount++;
+        }
+        //if(streetSegName.equals("11679")) println("*********************** " + streetSegName);
     }
-//    println(streetNetwork.get("11679"));
-//    println(dualNodes.get("11679"));
-    
-//    
-//    Iterator<String> itn = dualNodes.keySet().iterator();
-//    Iterator<String> its = streetNetwork.keySet().iterator();
-    
-//    while(its.hasNext())
-//    {
-//        String sn = itn.next();
-//        String ss = its.next();
-//        
-//        //if(!sn.equals(ss)) println("String matching: segment:  " + ss + " /node: " + sn);
-//        println(ss + " " + dualNodes.get(ss).ID);
-//    }
+
     
     for(String streetSegName:streetNetwork.keySet())
     { 
@@ -63,49 +57,42 @@ void createDualFromSegments()
                 StreetSegment seg2 = streetNetwork.get(streetSegName2);
                 PVector s2 = seg2.screenPoints.get(0);
                 PVector e2 = seg2.screenPoints.get(seg2.points.size()-1);
-                
-                
                 /*
                     If the start of seg2 is the end of this segment
                     We only really need to do this one direction
                 */
                 if(end.equals(s2))
                 {
-                    //forward cost
+                    //forward edge
                     Edge de = new Edge();
                     de.cost = 0.5*(seg.costs.x + seg2.costs.x);
                     de.startID = seg.ID;
                     de.endID = seg2.ID;
+                    de.ID = Integer.toString(dualEdgeID);
+                    dualEdgeID++;
                                     
                     if(dualEdges.get(seg.ID)==null) dualEdges.put(seg.ID, new HashMap<String, Edge>());
                     dualEdges.get(seg.ID).put(seg2.ID, de);
                     
-                    //back cost
+                    //back edge
                     Edge de2 = new Edge();
                     de2.cost = 0.5*(seg.costs.y + seg2.costs.y);
                     de2.startID = seg2.ID;
                     de2.endID = seg.ID;
+                    de2.ID = Integer.toString(dualEdgeID);
+                    dualEdgeID++;
                                     
                     if(dualEdges.get(seg2.ID)==null) dualEdges.put(seg2.ID, new HashMap<String, Edge>());
                     dualEdges.get(seg2.ID).put(seg.ID, de2);
-//                    println(dNode);
-//                    println("IDS " + dNode.ID);
-//                    println("seg2 " + seg2.ID);
-//                    println(dNode.destinations);
-                    String s = seg2.ID;
-                    dNode.destinations.add(seg2.ID);
-                    //if(dualNodes.get(seg2.ID)==null) println(s + " " + streetSegName2);
-                    //dualNodes.get(seg2.ID).destinations.add(seg.ID);
-                }
 
-          
-            
-            
+                    /*
+                        Populate destinations field in source and destination node
+                    */
+                    dNode.destinations.add(seg2.ID);
+                    dualNodes.get(seg2.ID).destinations.add(seg.ID);
+                }
         }
-//        else
-//        {
-//            println("null Node");
-//        }
+
         
     }
     

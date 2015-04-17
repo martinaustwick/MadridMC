@@ -39,11 +39,7 @@ boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge
     /*
         create a watchlist of candidate intersection IDs
     */
-    
-    
         boolean exhausted = true;
-    
-        //println("nodes.size() " + nodes.size());
         ArrayList<String> newwList = new ArrayList<String>();
         for(String w: wList)
         {
@@ -52,8 +48,7 @@ boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge
             */
             Node i = nodes.get(w);
             i.selecting = true;
-            //ellipse(i.p.x, i.p.y, 10, 10);
-            //println(wList.size());
+            
             if(!i.seen)
             {
                 for(String w2: i.destinations)
@@ -69,7 +64,6 @@ boolean handij(HashMap<String, Node> nodes, HashMap<String, HashMap<String, Edge
                 }
             }
             i.seen = true;
-            //println(doneList.size() + " " + intersections.size());
         }
         
        

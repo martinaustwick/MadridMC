@@ -95,6 +95,7 @@ void loadStreets()
         streetNetwork.put(l[IDcol], ss);
         if(!ss.ID.equals(l[IDcol]))println(l[IDcol]);
    }
+   println("streets loaded");
 }
 
 ArrayList<PVector> getPointsFromCell(String cell)
