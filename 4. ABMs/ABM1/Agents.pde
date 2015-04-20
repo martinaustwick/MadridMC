@@ -150,7 +150,8 @@ void gaussProb()
     /*
         normalising for sigma
     */
-    currentProb/=sd;
+    currentProb*=sd;
+    currentProb/=1000000000;
     //currentProb = prob;
    
     for(String ods1: flows.keySet())
@@ -182,7 +183,7 @@ void gaussProb()
 
 void evenProb()
 {
-    float prob = 1000000;
+    float prob = 1;
     int addedAgents = 0;
     //println("*************************" + frameCount + "********************");
     for(String ods1: flows.keySet())

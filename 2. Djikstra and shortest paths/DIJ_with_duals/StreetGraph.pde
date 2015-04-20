@@ -42,14 +42,14 @@ class Node
           rect(p.x, p.y, 5,5);
         //}
         
-        if(abs(mouseX-p.x)<5 && abs(mouseY-p.y)<5)
-        { 
-//            fill(255);
-//            rect(p.x, p.y, 200, 50);
-            fill(0);
-            text((ID + " " + destinations), p.x, p.y);
-            text((ID + " " + destinations), 0, 20);
-        }
+//        if(abs(mouseX-p.x)<5 && abs(mouseY-p.y)<5)
+//        { 
+////            fill(255);
+////            rect(p.x, p.y, 200, 50);
+//            fill(0);
+//            text((ID + " " + destinations), p.x, p.y);
+//            text((ID + " " + destinations), 0, 20);
+//        }
 
 //          if(showIntersectionJoins)
 //          {

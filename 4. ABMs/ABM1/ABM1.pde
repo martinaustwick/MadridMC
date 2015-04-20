@@ -1,5 +1,5 @@
 import java.util.*;
-float sd =    100000;
+float sd = 3600;
 
 
 /*
@@ -51,7 +51,8 @@ float latmax = 4937000;
 float lonmin = -418000;
 float lonmax = -406000;
 
-int h = 930;
+//int h = 930;
+int h = 500;
 
 String startString = "1";
 String pathString = "500";
@@ -81,7 +82,7 @@ Table dataOut;
 */
 
 float clock;
-float increment = 1000;
+float increment = 60;
 
 
 void setup()
@@ -152,7 +153,7 @@ void draw()
     
     drawGraph();
     //drawClock();
-    drawInfo();
+    //drawInfo();
     //if(capture) saveFrame("images/#######.jpg");
     if(capture) saveFrame("images2/#######.jpg");
     clock+=increment;
@@ -183,7 +184,9 @@ float [] gauss;
 int [] agentNum;
     
 int yheight = 150;
-float maxTime = 6*sd + 2000000;
+//float maxTime = 6*sd + 2000000;
+float maxTime = 8*sd;
+
 void drawGraph()
 {
     int thick = 1;

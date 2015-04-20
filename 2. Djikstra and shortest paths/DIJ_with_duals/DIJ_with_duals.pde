@@ -74,7 +74,7 @@ int routeCounter = 0;
 
 void setup()
 {
-    routesOutString = int(random(10000)) + routesOutString;
+    //routesOutString = int(random(10000)) + routesOutString;
     PrintWriter output; 
     if(dual){
       output = createWriter("dataOut/routesDual.csv"); 
@@ -148,6 +148,7 @@ void setup()
     
     countpaths = 0;
     
+    journeyLengths = new int [90];
  
 }
 
@@ -250,6 +251,8 @@ void draw()
                 forwardPath.add(s2);
             }
             forwardPath.add(endString);
+            
+            updatejourneyLengths(forwardPath);
             //forwardPath.add(startString);
             
             /*
@@ -298,7 +301,15 @@ void draw()
         }
     }
     
+    pushMatrix();  
+      translate(10, height-200);
+      stroke(0,255,255,50);
+      fill(0,255,255,50);
+      showJourneyLengths();
+    popMatrix();
+    
     if(capture) saveFrame("images/######.jpg");
+    if(frameCount>30*60*3) capture = false;
 }
 
 

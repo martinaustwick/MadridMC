@@ -3,7 +3,7 @@
 */
 
 boolean showInterSections = true;
-boolean showStreets = true;
+boolean showStreets = false;
 boolean showIntersectionJoins = false;
 boolean capture = false;
 

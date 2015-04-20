@@ -8,7 +8,8 @@ void updateRoutes()
   try
   {
 
-    outy = new FileWriter(sketchPath("")+"dataOut/" + routesOutString, true);
+    if(dual) outy = new FileWriter(sketchPath("")+"dataOut/routesDual.csv", true);
+    else outy = new FileWriter(sketchPath("")+"dataOut/" + routesOutString, true);
 
     String s1 = startOD;
     String endIntersection = "";
