@@ -1,5 +1,6 @@
-float rightCost = 10;
+float rightCost = 19;
 float leftCost = 20;
+float forwardCost = 0;
 
 void createDualFromSegments()
 {
@@ -82,9 +83,12 @@ void createDualFromSegments()
                     //turning costs
                     PVector forward2 = PVector.sub(seg2.screenPoints.get(0), seg2.screenPoints.get(0));
                     float turn = forward2.heading() - forward1.heading();
-                    if(turn>PI/4) de.cost+=rightCost;
-                    else if(turn>3*PI/4 && turn<7*PI/4) de.cost+=leftCost;
                     
+                    float turnCost = 0;
+                    if(turn<PI/4 || turn>7*PI/4) turnCost = forwardCost;
+                    if(turn>PI/4 && turn<3*PI/4) turnCost =rightCost;
+                    if(turn>3*PI/4 && turn<7*PI/4) turnCost =leftCost;
+                    de.cost+=turnCost;
                     
                     de.startID = streetSegName;
                     de.endID = streetSegName2;

@@ -170,7 +170,7 @@ void draw()
             background(255);
             if(showStreets)
             {
-              stroke(0, 50);
+              stroke(0, 20);
               for(StreetSegment sso: streetNetwork.values())
               {
                   sso.display();
