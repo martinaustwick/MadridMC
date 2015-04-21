@@ -21,14 +21,14 @@ class Agent
         Route r = routes.get(startOD).get(endOD);
         prevIntersection = routes.get(startOD).get(endOD).intersectionIDs.get(segmentInt);
         nextIntersection = routes.get(startOD).get(endOD).intersectionIDs.get(segmentInt+1);
-        segmentDuration = edges.get(prevIntersection).get(nextIntersection).weight;
+        segmentDuration = edges.get(prevIntersection).get(nextIntersection).cost;
         p = intersections.get(prevIntersection).p;
         
         reachedDestination=false;
         //float f =random(255);
         //c =  color(100, 255, 150);
         
-        c =  color(100, 255, 150, 10);
+        c =  color(100, 255, 150, pointOpacity);
         isNew = true;
         speed = 1.0;
         
@@ -51,13 +51,24 @@ class Agent
         PVector p1 = intersections.get(prevIntersection).p;
         PVector p2 = intersections.get(nextIntersection).p;
         
-        stroke(hue(c), saturation(c), brightness(c), 20);
-        strokeWeight(3);
-        line(p1.x, p1.y, p2.x, p2.y);
+        //stroke(hue(c), saturation(c), brightness(c), pointOpacity);
+//        stroke(0, saturation(c), brightness(c), pontOpacity);
+//        strokeWeight(2);
+//        line(p1.x, p1.y, p2.x, p2.y);
+
+//        stroke(0, 100);
+//        strokeWeight(0.5);
+//        line(p1.x, p1.y, p2.x, p2.y);
+//        
+        stroke(0, pointOpacity);
+        strokeWeight(2);
+        point(p.x, p.y);
         
-        stroke(0, saturation(c), brightness(c), 1);
+        //stroke(0, saturation(c), brightness(c), areaOpacity);
+        stroke(0, areaOpacity);
         strokeWeight(15);
-        line(p1.x, p1.y, p2.x, p2.y);
+        //line(p1.x, p1.y, p2.x, p2.y);
+        point(p.x, p.y);
 //        
         stroke(0);
         strokeWeight(1);
@@ -93,9 +104,9 @@ class Agent
               drawing in lines for skipped segments more weakly
             */
             
-            p1 = intersections.get(prevIntersection).p;
-            PVector p2 = intersections.get(nextIntersection).p;
-            line(p1.x, p1.y, p2.x, p2.y);  
+//            p1 = intersections.get(prevIntersection).p;
+//            PVector p2 = intersections.get(nextIntersection).p;
+//            line(p1.x, p1.y, p2.x, p2.y);  
           
             getNewSegment();
             proportion = speed*(clock-segmentStartTime)/segmentDuration;
@@ -104,8 +115,8 @@ class Agent
             
         }
         p = PVector.lerp(intersections.get(prevIntersection).p,intersections.get(nextIntersection).p, proportion);
-        strokeWeight(5);
-        line(p1.x, p1.y, p.x, p.y);  
+//        strokeWeight(5);
+//        line(p1.x, p1.y, p.x, p.y);  
         
     }
     
@@ -118,7 +129,7 @@ class Agent
         {
             prevIntersection = routes.get(startOD).get(endOD).intersectionIDs.get(segmentInt);
             nextIntersection = routes.get(startOD).get(endOD).intersectionIDs.get(segmentInt+1);
-            segmentDuration = edges.get(prevIntersection).get(nextIntersection).weight;
+            segmentDuration = edges.get(prevIntersection).get(nextIntersection).cost;
             //p = intersections.get(prevIntersection).p; 
         }
         else
@@ -150,8 +161,10 @@ void gaussProb()
     /*
         normalising for sigma
     */
-    currentProb*=sd;
-    currentProb/=1000000000;
+    //currentProb*=sd;
+    currentProb/=100000;
+    currentProb*=5;
+    currentProb*=increment;
     //currentProb = prob;
    
     for(String ods1: flows.keySet())

@@ -1,6 +1,12 @@
 import java.util.*;
-float sd = 3600;
-
+/*
+    Time-release profile
+*/
+float sd = 10;
+float increment = 5;
+float bgOpacity = 200;
+float pointOpacity = 20;
+float areaOpacity = 1;
 
 /*
     High-level graph: OD/flows[weight]
@@ -82,7 +88,7 @@ Table dataOut;
 */
 
 float clock;
-float increment = 60;
+
 
 
 void setup()
@@ -117,9 +123,9 @@ void setup()
     println("edge laoding dun");
     
     clock = 0;
-    
-    //testAgent();
     agents =  new ArrayList<Agent>();
+    //testAgent();
+    
     //drawLoadedSegments();
     
     background(255);
@@ -129,7 +135,7 @@ void setup()
 void draw()
 {
     noStroke();
-    fill(255, 100);
+    fill(255, bgOpacity);
     rect(width/2,height/2,width, height);
     
     stroke(0);
@@ -152,10 +158,13 @@ void draw()
     displayAgents(agents);
     
     drawGraph();
-    //drawClock();
+    pushMatrix();
+      translate(50, 15);
+      drawClock();
+    popMatrix();
     //drawInfo();
     //if(capture) saveFrame("images/#######.jpg");
-    if(capture) saveFrame("images2/#######.jpg");
+    if(capture) saveFrame("images/#######.jpg");
     clock+=increment;
     if(clock>maxTime)exit();
 }
@@ -169,13 +178,13 @@ void drawInfo()
     text("SD :" + int(sd/1000) + "k", 10, 30);
 }
 
-void drawClock()
-{  
-//    fill(255);
-//    rect(50, height-20, 100, 40);
-    fill(0);
-    text(int(clock/1000), 30, height - 20);
-}
+//void drawClock()
+//{  
+////    fill(255);
+////    rect(50, height-20, 100, 40);
+//    fill(0);
+//    text(int(clock/1000), 30, height - 20);
+//}
 
 float prob = 1.0;
 float mean = 3*sd;
@@ -184,8 +193,8 @@ float [] gauss;
 int [] agentNum;
     
 int yheight = 150;
-//float maxTime = 6*sd + 2000000;
-float maxTime = 8*sd;
+float maxTime = 6*sd + 3600;
+//float maxTime = 8*sd;
 
 void drawGraph()
 {
@@ -250,4 +259,15 @@ void drawGraph()
     text(int(clock/1000), width-50, height + 10 -0.5*yheight);
 }
 
+void drawClock()
+{
+    fill(255);
+    rect(0,0,90,20);
+    fill(0);
+    int hours = int((clock-mean)/3600);
+    int mins = int((clock-mean)/60)%60;
+    int seconds = int(clock-mean+36000)%60;
+    text(nf(hours,2,0) +":" + nf(mins,2,0) +":"+nf(seconds,2,0), -30, 7);
+    
+}
 
